@@ -1,0 +1,105 @@
+# Phenotype-definition audit for GWAS summary statistics
+
+A screen for phenotype-definition contamination in GWAS used as Mendelian randomisation (MR) exposures. It runs on public summary statistics and needs no instruments.
+
+Vishnupriya Kannan and Marie Loh, Lee Kong Chian School of Medicine, Nanyang Technological University, Singapore.
+
+> Status: research code for work under preparation (Genome Informatics 2026 abstract). Scripts use hard-coded `/tmp` paths and are being refactored. See [Known gaps](#known-gaps).
+
+## The problem
+
+GWAS that share one trait label, and are reused as MR exposures, often differ in case definition: clinician criteria, self-report, hospital coding, symptom questionnaires, composite phenotypes. Loosening a definition does two different things:
+
+- **Attenuation.** A looser definition measures the same liability more noisily, so all instrument effects shrink by a scalar. In an MR ratio (outcome effect / exposure effect) the scalar cancels. Harmless for MR.
+- **Non-specificity.** A looser definition also imports other conditions. Instruments then tag something broader than the trait, and estimates inflate for any outcome genetically correlated with what was imported. This does not cancel, and standard MR sensitivity analyses (F, MR-Egger, weighted median) do not detect it, because the instruments are valid for the phenotype as defined.
+
+## The audit
+
+Four steps, in increasing cost.
+
+1. **Concordance (lambda).** Deming regression of instrument effects in definition D against a reference definition R. Low lambda flags a candidate but is not itself evidence of bias.
+2. **Contamination index (cheap, genome-wide, no instruments).**
+
+   `excess = rg(D, C) − rg(D, R) × rg(R, C)`
+
+   where C is a nominated contaminant. Subtracting the reference term separates contamination from genuine shared biology.
+3. **Multivariable MR (confirmatory).** Regress the outcome jointly on D and R. If D is merely noisier, conditioning absorbs it; if D retains an independent effect, it carries non-reference signal.
+4. **Outcome triage.** Bias reaches only outcomes genetically related to the contaminant; `rg(outcome, C)` says which outcomes are at risk.
+
+## Worked example: atopic dermatitis
+
+Five European AD definitions, seven outcomes, all public data.
+
+| Definition | lambda | excess rg | MVMR conditional OR (asthma) | Verdict |
+|---|---|---|---|---|
+| Clinician criteria (EAGLE) | 1.00 | 0.00 | reference | clean |
+| Hospital ICD (UK Biobank) | 0.96 | −0.04 | 1.03 (0.88–1.21), p = 0.69 | clean, fully absorbed |
+| Pooled meta-analysis (2023) | 0.69 | −0.07 | 1.28 (1.02–1.61), p = 0.032 | partly contaminated |
+| Self-report (UK Biobank) | 0.29 | +0.38 | 1.57 (1.44–1.71), p = 1e-24 | contaminated |
+| Broad allergic composite | 0.28 | +0.28 | 2.03 (1.79–2.31), p = 3e-28 | heavily contaminated |
+
+## Worked example: depression
+
+The Glanville 2021 UK Biobank ladder; reference CIDI lifetime depression, contaminant neuroticism. Instrument counts collapse for the strict arms, so MR is not possible, but the index still runs.
+
+| Definition | rg vs reference | rg vs contaminant | excess |
+|---|---|---|---|
+| 1 endorsed measure | 0.606 | 0.656 | 0.359 |
+| 2 endorsed measures | 0.577 | 0.714 | 0.431 |
+| 3 endorsed measures | 0.744 | 0.614 | 0.250 |
+| 4–5 endorsed measures | 0.521 | 0.849 | 0.594 |
+
+Contamination can belong to the measurement instrument rather than to the breadth of the definition: raising the threshold on a neuroticism-loaded questionnaire concentrates it instead of removing it.
+
+## Systematic scan: UK Biobank
+
+29 trait families from the Neale lab round-2 GWAS, 35 definition comparisons, 11 candidate contaminants, definition varying within one cohort and array. Outputs: `results/Table8_ukb_definition_scan.csv`, `results/Table10_sensitivity.csv`, `results/Fig6_ukb_definition_scan.png`.
+
+## Running it
+
+Dependencies: Python 3 (`pip install -r requirements.txt`), PLINK 2, curl. No R, no LDSC install.
+
+```
+cd code
+bash RUN_SCAN.sh
+```
+
+About two hours on two cores / 8 GB RAM, mostly download (1000 Genomes ~15 GB; 100 UK Biobank GWAS ~60 GB streamed, not stored). Peak disk about 25 GB.
+
+| Scripts | Purpose |
+|---|---|
+| `00`–`03` | harmonise GWAS, orientation check, PLINK 2 clumping, outcome extraction |
+| `06`–`09` | concordance (lambda), univariable MR, figures, exposure matrix for MVMR |
+| `10`–`13` | LD scores from 1000G EUR, LD-score SNP extraction, MVMR, cross-trait LD score regression |
+| `14`–`16` | outcome ladder, contamination index, final figures |
+| `17`–`21` | applying the audit to a new trait family (depression), standard errors, cross-family figure |
+| `22a`–`22c` | 1000 Genomes panel and LD scores (uniform sampling fraction) |
+| `23`–`29` | UK Biobank scan: families and contaminants, streaming, jackknife, validation, scan, figure |
+
+## Design choices
+
+- **Self-contained LD scores.** No dependency on the precomputed `eur_w_ld_chr` release; LD scores are computed from 1000 Genomes EUR (1 Mb window, bias-corrected r²), so the audit runs on any reference panel you can download. The thinned SNP set deflates LD scores, so heritability on this scale is not interpreted; genetic correlation is a ratio and is unaffected. The implementation reproduces published correlations (asthma–allergic rhinitis 0.834; depression–anxiety 0.882).
+- **Uniform SNP density.** The released build samples a fixed fraction (`--thin 0.065`) of MAF ≥ 0.05 SNPs per chromosome rather than a fixed count, which would make LD-score magnitude depend on chromosome length. Genetic correlations moved by < 0.05 between the two builds.
+- **Effective sample size from standard errors**, not reported counts, so files with incomplete metadata still run.
+- **Exact standard errors.** The index is re-formed inside each of 200 delete-one-block jackknife replicates (`25b`), since its three rg terms share SNPs and are not independent.
+- **Winsorising** rg at 1.25 (GWAS ATLAS convention); results unchanged without it (Table10).
+- **Rare binary traits.** Neale round-2 fits linear models to 0/1 phenotypes. Arms require ≥ 2,000 cases, and Table10 restricts to prevalence ≥ 1%. The ordering by definition type survives; the single most extreme result (noninfectious colitis vs hospital-coded ulcerative colitis) does not and should be quoted with that caveat.
+- **The reference is the best available arm, not a gold standard.** Contamination shared by a definition and its reference is invisible to the index, biasing it towards the null. Table10 re-runs with two alternative reference rules; the ranking by definition type is preserved.
+
+## Related work
+
+- Cai et al. 2020, *Nature Genetics*, doi:10.1038/s41588-020-0594-5 — minimal phenotyping yields depression GWAS signals of low specificity.
+- de la Fuente, Londono-Correa and Tucker-Drob 2025, *Bioinformatics* — residual genetic correlation within genomic SEM; for a single reference indicator it reduces to the index used here. This repository provides a closed form needing no model fitting or instruments, validation against multivariable MR, and a systematic scan.
+
+## Known gaps
+
+- `28_ukb_validation.py` imports a helper module `ldsc` (`load`, `h2`, `rho`) and `29_ukb_scan.py` imports `ldsc3` from `/tmp/ukb`; `24_ukb_stream.py` reads `/tmp/ukb/whitelist.parquet`. These helpers are not yet in the repository, so `RUN_SCAN.sh` does not yet run end to end from a fresh clone.
+- Paths are hard-coded under `/tmp`.
+
+## Citation
+
+Kannan V, Loh M. Phenotype-definition contamination is detectable from summary statistics alone: a genome-wide screen validated against multivariable Mendelian randomisation. Abstract submitted to Genome Informatics 2026, Wellcome Genome Campus.
+
+## Licence
+
+MIT

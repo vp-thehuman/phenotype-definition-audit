@@ -1,0 +1,6 @@
+definition,label,n_shared,lambda_vs_EAGLE,pearson_r
+E1_EAGLE_criteria,Clinician criteria (EAGLE),,1.0,1.0
+E2_UKB_selfreport,Self-report (UKB),380.0,0.2894683471291366,0.9352044246909921
+E3_UKB_ICD,Hospital ICD (UKB),565.0,0.9630858749817964,0.9730929930558265
+E4_allergic_broad,Broad allergic composite,374.0,0.28358994899625245,0.9270520693251819
+E5_BUDU_meta,Pooled meta-analysis,697.0,0.6849737757092897,0.9601643037667705

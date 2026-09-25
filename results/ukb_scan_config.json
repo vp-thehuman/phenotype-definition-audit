@@ -1,0 +1,721 @@
+{
+ "families": {
+  "Asthma": [
+   {
+    "pheno": "20002_1111",
+    "deftype": "self-report",
+    "cases": 41934,
+    "desc": "Non-cancer illness code, self-reported: asthma"
+   },
+   {
+    "pheno": "22127",
+    "deftype": "doctor-diagnosed Q",
+    "cases": 11717,
+    "desc": "Doctor diagnosed asthma"
+   },
+   {
+    "pheno": "6152_8",
+    "deftype": "touchscreen composite",
+    "cases": 41633,
+    "desc": "Blood clot, DVT, bronchitis, emphysema, asthma, rhinitis, eczema, allergy diagnosed by doctor: Asthma"
+   }
+  ],
+  "Hayfever/rhinitis": [
+   {
+    "pheno": "20002_1387",
+    "deftype": "self-report",
+    "cases": 20667,
+    "desc": "Non-cancer illness code, self-reported: hayfever/allergic rhinitis"
+   },
+   {
+    "pheno": "6152_9",
+    "deftype": "touchscreen composite",
+    "cases": 83407,
+    "desc": "Blood clot, DVT, bronchitis, emphysema, asthma, rhinitis, eczema, allergy diagnosed by doctor: Hayfever, allergic rhinitis or eczema"
+   }
+  ],
+  "Hypertension": [
+   {
+    "pheno": "20002_1065",
+    "deftype": "self-report",
+    "cases": 93560,
+    "desc": "Non-cancer illness code, self-reported: hypertension"
+   },
+   {
+    "pheno": "6150_4",
+    "deftype": "touchscreen composite",
+    "cases": 97139,
+    "desc": "Vascular/heart problems diagnosed by doctor: High blood pressure"
+   }
+  ],
+  "Angina": [
+   {
+    "pheno": "20002_1074",
+    "deftype": "self-report",
+    "cases": 11370,
+    "desc": "Non-cancer illness code, self-reported: angina"
+   },
+   {
+    "pheno": "I20",
+    "deftype": "hospital ICD",
+    "cases": 6246,
+    "desc": "Diagnoses - main ICD10: I20 Angina pectoris"
+   },
+   {
+    "pheno": "I9_UAP",
+    "deftype": "curated endpoint",
+    "cases": 3439,
+    "desc": "Unstable angina pectoris"
+   }
+  ],
+  "Myocardial infarction": [
+   {
+    "pheno": "20002_1075",
+    "deftype": "self-report",
+    "cases": 8239,
+    "desc": "Non-cancer illness code, self-reported: heart attack/myocardial infarction"
+   },
+   {
+    "pheno": "I21",
+    "deftype": "hospital ICD",
+    "cases": 5948,
+    "desc": "Diagnoses - main ICD10: I21 Acute myocardial infarction"
+   },
+   {
+    "pheno": "I9_MI",
+    "deftype": "curated endpoint",
+    "cases": 7018,
+    "desc": "Myocardial infarction"
+   }
+  ],
+  "Ischaemic heart disease": [
+   {
+    "pheno": "I25",
+    "deftype": "hospital ICD",
+    "cases": 12769,
+    "desc": "Diagnoses - main ICD10: I25 Chronic ischaemic heart disease"
+   },
+   {
+    "pheno": "I9_IHD",
+    "deftype": "curated endpoint",
+    "cases": 20857,
+    "desc": "Ischaemic heart disease, wide definition"
+   },
+   {
+    "pheno": "I9_CHD",
+    "deftype": "curated endpoint",
+    "cases": 10157,
+    "desc": "Major coronary heart disease event"
+   },
+   {
+    "pheno": "I9_CORATHER",
+    "deftype": "curated endpoint",
+    "cases": 14334,
+    "desc": "Coronary atherosclerosis"
+   }
+  ],
+  "Stroke": [
+   {
+    "pheno": "20002_1081",
+    "deftype": "self-report",
+    "cases": 4836,
+    "desc": "Non-cancer illness code, self-reported: stroke"
+   },
+   {
+    "pheno": "I63",
+    "deftype": "hospital ICD",
+    "cases": 2353,
+    "desc": "Diagnoses - main ICD10: I63 Cerebral infarction"
+   },
+   {
+    "pheno": "I9_STR",
+    "deftype": "curated endpoint",
+    "cases": 3832,
+    "desc": "Stroke, excluding SAH"
+   },
+   {
+    "pheno": "C_STROKE",
+    "deftype": "curated endpoint",
+    "cases": 6146,
+    "desc": "STROKE"
+   }
+  ],
+  "Atrial fibrillation": [
+   {
+    "pheno": "20002_1471",
+    "deftype": "self-report",
+    "cases": 2828,
+    "desc": "Non-cancer illness code, self-reported: atrial fibrillation"
+   },
+   {
+    "pheno": "I48",
+    "deftype": "hospital ICD",
+    "cases": 6356,
+    "desc": "Diagnoses - main ICD10: I48 Atrial fibrillation and flutter"
+   },
+   {
+    "pheno": "CARDIAC_ARRHYTM",
+    "deftype": "curated endpoint",
+    "cases": 8801,
+    "desc": "Cardiac arrhytmias, COPD co-morbidities"
+   }
+  ],
+  "Venous thromboembolism": [
+   {
+    "pheno": "20002_1094",
+    "deftype": "self-report",
+    "cases": 7237,
+    "desc": "Non-cancer illness code, self-reported: deep venous thrombosis (dvt)"
+   },
+   {
+    "pheno": "I80",
+    "deftype": "hospital ICD",
+    "cases": 2289,
+    "desc": "Diagnoses - main ICD10: I80 Phlebitis and thrombophlebitis"
+   },
+   {
+    "pheno": "I9_VTE",
+    "deftype": "curated endpoint",
+    "cases": 4620,
+    "desc": "Venous thromboembolism"
+   },
+   {
+    "pheno": "I9_DVTANDPULM",
+    "deftype": "curated endpoint",
+    "cases": 4319,
+    "desc": "DVT of lower extremities and pulmonary embolism"
+   }
+  ],
+  "Osteoarthritis": [
+   {
+    "pheno": "20002_1465",
+    "deftype": "self-report",
+    "cases": 30046,
+    "desc": "Non-cancer illness code, self-reported: osteoarthritis"
+   },
+   {
+    "pheno": "M17",
+    "deftype": "hospital ICD",
+    "cases": 11497,
+    "desc": "Diagnoses - main ICD10: M17 Gonarthrosis [arthrosis of knee]"
+   },
+   {
+    "pheno": "M16",
+    "deftype": "hospital ICD",
+    "cases": 9136,
+    "desc": "Diagnoses - main ICD10: M16 Coxarthrosis [arthrosis of hip]"
+   },
+   {
+    "pheno": "M13_ARTHROSIS",
+    "deftype": "curated endpoint",
+    "cases": 24977,
+    "desc": "#Arthrosis"
+   },
+   {
+    "pheno": "KNEE_ARTHROSIS",
+    "deftype": "curated endpoint",
+    "cases": 11900,
+    "desc": "Gonarthrosis [arthrosis of knee](FG)"
+   }
+  ],
+  "Back pain": [
+   {
+    "pheno": "20002_1294",
+    "deftype": "self-report",
+    "cases": 6339,
+    "desc": "Non-cancer illness code, self-reported: back problem"
+   },
+   {
+    "pheno": "M54",
+    "deftype": "hospital ICD",
+    "cases": 8361,
+    "desc": "Diagnoses - main ICD10: M54 Dorsalgia"
+   },
+   {
+    "pheno": "M13_DORSALGIA",
+    "deftype": "curated endpoint",
+    "cases": 8799,
+    "desc": "Dorsalgia"
+   }
+  ],
+  "Cataract": [
+   {
+    "pheno": "20002_1278",
+    "deftype": "self-report",
+    "cases": 5045,
+    "desc": "Non-cancer illness code, self-reported: cataract"
+   },
+   {
+    "pheno": "H26",
+    "deftype": "hospital ICD",
+    "cases": 11306,
+    "desc": "Diagnoses - main ICD10: H26 Other cataract"
+   },
+   {
+    "pheno": "H25",
+    "deftype": "hospital ICD",
+    "cases": 6332,
+    "desc": "Diagnoses - main ICD10: H25 Senile cataract"
+   },
+   {
+    "pheno": "H7_LENS",
+    "deftype": "curated endpoint",
+    "cases": 17076,
+    "desc": "Disorders of lens"
+   }
+  ],
+  "Cholelithiasis": [
+   {
+    "pheno": "20002_1162",
+    "deftype": "self-report",
+    "cases": 5941,
+    "desc": "Non-cancer illness code, self-reported: cholelithiasis/gall stones"
+   },
+   {
+    "pheno": "K80",
+    "deftype": "hospital ICD",
+    "cases": 10520,
+    "desc": "Diagnoses - main ICD10: K80 Cholelithiasis"
+   },
+   {
+    "pheno": "K11_GALLBILPANC",
+    "deftype": "curated endpoint",
+    "cases": 13922,
+    "desc": "Disorders of gallbladder, biliary tract and pancreas"
+   }
+  ],
+  "Gastro-oesophageal reflux": [
+   {
+    "pheno": "20002_1138",
+    "deftype": "self-report",
+    "cases": 15210,
+    "desc": "Non-cancer illness code, self-reported: gastro-oesophageal reflux (gord) / gastric reflux"
+   },
+   {
+    "pheno": "K21",
+    "deftype": "hospital ICD",
+    "cases": 10743,
+    "desc": "Diagnoses - main ICD10: K21 Gastro-oesophageal reflux disease"
+   },
+   {
+    "pheno": "K20",
+    "deftype": "hospital ICD",
+    "cases": 4799,
+    "desc": "Diagnoses - main ICD10: K20 Oesophagitis"
+   }
+  ],
+  "Diverticular disease": [
+   {
+    "pheno": "20002_1458",
+    "deftype": "self-report",
+    "cases": 4124,
+    "desc": "Non-cancer illness code, self-reported: diverticular disease/diverticulitis"
+   },
+   {
+    "pheno": "K57",
+    "deftype": "hospital ICD",
+    "cases": 12662,
+    "desc": "Diagnoses - main ICD10: K57 Diverticular disease of intestine"
+   }
+  ],
+  "Appendicitis": [
+   {
+    "pheno": "20002_1502",
+    "deftype": "self-report",
+    "cases": 3058,
+    "desc": "Non-cancer illness code, self-reported: appendicitis"
+   },
+   {
+    "pheno": "K35",
+    "deftype": "hospital ICD",
+    "cases": 2404,
+    "desc": "Diagnoses - main ICD10: K35 Acute appendicitis"
+   },
+   {
+    "pheno": "K11_APPENDIX",
+    "deftype": "curated endpoint",
+    "cases": 2953,
+    "desc": "Diseases of appendix"
+   }
+  ],
+  "Kidney/ureter stone": [
+   {
+    "pheno": "20002_1197",
+    "deftype": "self-report",
+    "cases": 2863,
+    "desc": "Non-cancer illness code, self-reported: kidney stone/ureter stone/bladder stone"
+   },
+   {
+    "pheno": "N20",
+    "deftype": "hospital ICD",
+    "cases": 3540,
+    "desc": "Diagnoses - main ICD10: N20 Calculus of kidney and ureter"
+   }
+  ],
+  "Pneumonia": [
+   {
+    "pheno": "20002_1398",
+    "deftype": "self-report",
+    "cases": 5182,
+    "desc": "Non-cancer illness code, self-reported: pneumonia"
+   },
+   {
+    "pheno": "J18",
+    "deftype": "hospital ICD",
+    "cases": 4630,
+    "desc": "Diagnoses - main ICD10: J18 Pneumonia, organism unspecified"
+   },
+   {
+    "pheno": "PNEUMONIA",
+    "deftype": "curated endpoint",
+    "cases": 5900,
+    "desc": "Pneumonias (Asthma/COPD co-morbidities)"
+   }
+  ],
+  "Prostate cancer": [
+   {
+    "pheno": "C61",
+    "deftype": "hospital ICD",
+    "cases": 4342,
+    "desc": "Diagnoses - main ICD10: C61 Malignant neoplasm of prostate"
+   },
+   {
+    "pheno": "C3_PROSTATE",
+    "deftype": "curated endpoint",
+    "cases": 6321,
+    "desc": "Malignant neoplasm of prostate"
+   }
+  ],
+  "Breast cancer": [
+   {
+    "pheno": "C50",
+    "deftype": "hospital ICD",
+    "cases": 8304,
+    "desc": "Diagnoses - main ICD10: C50 Malignant neoplasm of breast"
+   },
+   {
+    "pheno": "C3_BREAST_3",
+    "deftype": "curated endpoint",
+    "cases": 9721,
+    "desc": "Malignant neoplasm of breast"
+   }
+  ],
+  "Non-melanoma skin cancer": [
+   {
+    "pheno": "C44",
+    "deftype": "hospital ICD",
+    "cases": 9086,
+    "desc": "Diagnoses - main ICD10: C44 Other malignant neoplasms of skin"
+   },
+   {
+    "pheno": "C3_OTHER_SKIN",
+    "deftype": "curated endpoint",
+    "cases": 14402,
+    "desc": "Other malignant neoplasms of skin"
+   }
+  ],
+  "Colon cancer": [
+   {
+    "pheno": "C18",
+    "deftype": "hospital ICD",
+    "cases": 2226,
+    "desc": "Diagnoses - main ICD10: C18 Malignant neoplasm of colon"
+   },
+   {
+    "pheno": "C3_COLON",
+    "deftype": "curated endpoint",
+    "cases": 2437,
+    "desc": "Malignant neoplasm of colon"
+   }
+  ],
+  "Carpal tunnel syndrome": [
+   {
+    "pheno": "G56",
+    "deftype": "hospital ICD",
+    "cases": 8130,
+    "desc": "Diagnoses - main ICD10: G56 Mononeuropathies of upper limb"
+   },
+   {
+    "pheno": "G6_CARPTU",
+    "deftype": "curated endpoint",
+    "cases": 7973,
+    "desc": "Carpal tunnel syndrome"
+   }
+  ],
+  "Shoulder lesion": [
+   {
+    "pheno": "M75",
+    "deftype": "hospital ICD",
+    "cases": 7040,
+    "desc": "Diagnoses - main ICD10: M75 Shoulder lesions"
+   },
+   {
+    "pheno": "M13_SHOULDER",
+    "deftype": "curated endpoint",
+    "cases": 7243,
+    "desc": "Shoulder lesions"
+   }
+  ],
+  "Iron deficiency anaemia": [
+   {
+    "pheno": "D50",
+    "deftype": "hospital ICD",
+    "cases": 3222,
+    "desc": "Diagnoses - main ICD10: D50 Iron deficiency anaemia"
+   },
+   {
+    "pheno": "D3_ANAEMIA_IRONDEF",
+    "deftype": "curated endpoint",
+    "cases": 3786,
+    "desc": "Iron deficiency anaemia"
+   }
+  ],
+  "Sleep disorder": [
+   {
+    "pheno": "G47",
+    "deftype": "hospital ICD",
+    "cases": 2723,
+    "desc": "Diagnoses - main ICD10: G47 Sleep disorders"
+   },
+   {
+    "pheno": "SLEEP",
+    "deftype": "curated endpoint",
+    "cases": 2951,
+    "desc": "Sleep disorders (combined)"
+   }
+  ],
+  "Inguinal/other hernia": [
+   {
+    "pheno": "K40",
+    "deftype": "hospital ICD",
+    "cases": 13147,
+    "desc": "Diagnoses - main ICD10: K40 Inguinal hernia"
+   },
+   {
+    "pheno": "K11_HERNIA",
+    "deftype": "curated endpoint",
+    "cases": 26197,
+    "desc": "Hernia"
+   }
+  ],
+  "Retinal detachment": [
+   {
+    "pheno": "H33",
+    "deftype": "hospital ICD",
+    "cases": 2671,
+    "desc": "Diagnoses - main ICD10: H33 Retinal detachments and breaks"
+   },
+   {
+    "pheno": "H7_RETINALDETACH",
+    "deftype": "curated endpoint",
+    "cases": 3043,
+    "desc": "Retinal detachments and breaks"
+   }
+  ],
+  "Eyelid disorder": [
+   {
+    "pheno": "H02",
+    "deftype": "hospital ICD",
+    "cases": 4294,
+    "desc": "Diagnoses - main ICD10: H02 Other disorders of eyelid"
+   },
+   {
+    "pheno": "H7_EYELIDDIS",
+    "deftype": "curated endpoint",
+    "cases": 4529,
+    "desc": "Other disorders of eyelid"
+   }
+  ],
+  "Depression/mental disorder": [
+   {
+    "pheno": "20002_1286",
+    "deftype": "self-report",
+    "cases": 20648,
+    "desc": "Non-cancer illness code, self-reported: depression"
+   },
+   {
+    "pheno": "KRA_PSY_ANYMENTAL",
+    "deftype": "curated endpoint",
+    "cases": 4304,
+    "desc": "Any mental disorder"
+   }
+  ],
+  "Migraine/headache": [
+   {
+    "pheno": "20002_1265",
+    "deftype": "self-report",
+    "cases": 10647,
+    "desc": "Non-cancer illness code, self-reported: migraine"
+   },
+   {
+    "pheno": "R51",
+    "deftype": "hospital ICD",
+    "cases": 4271,
+    "desc": "Diagnoses - main ICD10: R51 Headache"
+   }
+  ],
+  "Ulcerative colitis": [
+   {
+    "pheno": "K51",
+    "deftype": "hospital ICD",
+    "cases": 2143,
+    "desc": "Diagnoses - main ICD10: K51 Ulcerative colitis"
+   },
+   {
+    "pheno": "COLITNONINFNAS",
+    "deftype": "curated endpoint",
+    "cases": 8945,
+    "desc": "Noninfectious colitis NAS"
+   }
+  ],
+  "Anaemia (other)": [
+   {
+    "pheno": "D64",
+    "deftype": "hospital ICD",
+    "cases": 3702,
+    "desc": "Diagnoses - main ICD10: D64 Other anaemias"
+   },
+   {
+    "pheno": "D3_OTHERANAEMIA",
+    "deftype": "curated endpoint",
+    "cases": 4294,
+    "desc": "Other anaemias"
+   }
+  ],
+  "Bronchitis/COPD": [
+   {
+    "pheno": "20002_1113",
+    "deftype": "self-report",
+    "cases": 5031,
+    "desc": "Non-cancer illness code, self-reported: emphysema/chronic bronchitis"
+   },
+   {
+    "pheno": "20002_1412",
+    "deftype": "self-report",
+    "cases": 2681,
+    "desc": "Non-cancer illness code, self-reported: bronchitis"
+   },
+   {
+    "pheno": "BRONCHITIS",
+    "deftype": "curated endpoint",
+    "cases": 4283,
+    "desc": "Bronchitis"
+   }
+  ]
+ },
+ "contaminants": {
+  "135": "N self-reported illnesses (reporting propensity)",
+  "137": "N medications taken",
+  "2178": "Overall health rating",
+  "2090": "Seen GP for nerves/anxiety/depression",
+  "ICDMAIN_ANY_ENTRY": "Any hospital ICD episode (hospitalisation propensity)",
+  "XXI_HEALTHFACTORS": "Health-service contact factors",
+  "20127_irnt": "Neuroticism",
+  "21001_irnt": "BMI",
+  "189_irnt": "Townsend deprivation",
+  "6138_1": "College/University degree",
+  "20116_2": "Current smoker"
+ },
+ "all": [
+  "135",
+  "137",
+  "189_irnt",
+  "20002_1065",
+  "20002_1074",
+  "20002_1075",
+  "20002_1081",
+  "20002_1094",
+  "20002_1111",
+  "20002_1113",
+  "20002_1138",
+  "20002_1162",
+  "20002_1197",
+  "20002_1265",
+  "20002_1278",
+  "20002_1286",
+  "20002_1294",
+  "20002_1387",
+  "20002_1398",
+  "20002_1412",
+  "20002_1458",
+  "20002_1465",
+  "20002_1471",
+  "20002_1502",
+  "20116_2",
+  "20127_irnt",
+  "2090",
+  "21001_irnt",
+  "2178",
+  "22127",
+  "6138_1",
+  "6150_4",
+  "6152_8",
+  "6152_9",
+  "BRONCHITIS",
+  "C18",
+  "C3_BREAST_3",
+  "C3_COLON",
+  "C3_OTHER_SKIN",
+  "C3_PROSTATE",
+  "C44",
+  "C50",
+  "C61",
+  "CARDIAC_ARRHYTM",
+  "COLITNONINFNAS",
+  "C_STROKE",
+  "D3_ANAEMIA_IRONDEF",
+  "D3_OTHERANAEMIA",
+  "D50",
+  "D64",
+  "G47",
+  "G56",
+  "G6_CARPTU",
+  "H02",
+  "H25",
+  "H26",
+  "H33",
+  "H7_EYELIDDIS",
+  "H7_LENS",
+  "H7_RETINALDETACH",
+  "I20",
+  "I21",
+  "I25",
+  "I48",
+  "I63",
+  "I80",
+  "I9_CHD",
+  "I9_CORATHER",
+  "I9_DVTANDPULM",
+  "I9_IHD",
+  "I9_MI",
+  "I9_STR",
+  "I9_UAP",
+  "I9_VTE",
+  "ICDMAIN_ANY_ENTRY",
+  "J18",
+  "K11_APPENDIX",
+  "K11_GALLBILPANC",
+  "K11_HERNIA",
+  "K20",
+  "K21",
+  "K35",
+  "K40",
+  "K51",
+  "K57",
+  "K80",
+  "KNEE_ARTHROSIS",
+  "KRA_PSY_ANYMENTAL",
+  "M13_ARTHROSIS",
+  "M13_DORSALGIA",
+  "M13_SHOULDER",
+  "M16",
+  "M17",
+  "M54",
+  "M75",
+  "N20",
+  "PNEUMONIA",
+  "R51",
+  "SLEEP",
+  "XXI_HEALTHFACTORS"
+ ]
+}

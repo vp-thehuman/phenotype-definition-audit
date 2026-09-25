@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.DS_Store
+*.vcf.gz
+*.bed
+*.bim
+*.fam
+*.parquet
+*.tmp
+.github_token
