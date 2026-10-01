@@ -16,29 +16,39 @@ ROOT=${ROOT:-/tmp}
 set -e
 ROOT=${ROOT:-/tmp}
 export ROOT
+cd "$(dirname "$0")"
+mkdir -p ${ROOT}/ld ${ROOT}/ukb/ss
+command -v plink2 >/dev/null || [ -x ${ROOT}/bin/plink2 ] || { echo "plink2 not found on PATH or at ${ROOT}/bin/plink2" >&2; exit 1; }
+python3 -c "import pandas, numpy, pyarrow, matplotlib" || { echo "pip install -r ../requirements.txt" >&2; exit 1; }
 
-echo "[1/7] 1000 Genomes phase 3 EUR panel"
+echo "[1/9] 1000 Genomes phase 3 EUR panel"
 bash 22a_1000g_fetch.sh
 
-echo "[2/7] LD scores, uniform 6.5% sample of MAF>=0.05 SNPs per chromosome"
+echo "[2/9] LD scores, uniform 6.5% sample of MAF>=0.05 SNPs per chromosome"
 # Uniform SAMPLING FRACTION, not a fixed count per chromosome: a fixed count
 # makes SNP density, and therefore the LD score scale, depend on chromosome
 # length. See 22b for the flag (--thin 0.065, not --thin-count).
 bash 22b_ldscores_1000g.sh
 
-echo "[3/7] trait families and contaminant panel from the Neale phenotype manifest"
+echo "[3/9] trait families, contaminant panel and a-priori negative controls"
 python3 23_ukb_families.py
 
-echo "[4/7] stream 100 GWAS, keep only LD-score SNPs (5 parallel shards)"
+echo "[4/9] whitelist of Neale variants in the LD-score SNP set"
+python3 23b_ukb_whitelist.py
+
+echo "[5/9] stream 100 GWAS, keep only LD-score SNPs (5 parallel shards)"
 for s in 0 1 2 3 4; do python3 24_ukb_stream.py $s 5 & done; wait
 
-echo "[5/7] validation: reproduce known genetic correlations"
+echo "[6/9] validation: reproduce known genetic correlations"
 python3 28_ukb_validation.py
 
-echo "[6/7] scan with exact delete-one-block jackknife, plus sensitivity analyses"
+echo "[7/9] all genetic correlations behind the scan (Table9)"
+python3 25_ukb_ldsc_fast.py
+
+echo "[8/9] scan with exact delete-one-block jackknife (contiguous blocks), plus sensitivity analyses"
 python3 29_ukb_scan.py
 
-echo "[7/7] figure"
+echo "[9/9] figure"
 python3 27_ukb_figure.py
 
 echo
