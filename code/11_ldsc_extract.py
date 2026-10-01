@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Extract the LD-score SNP set from every GWAS for LD score regression."""
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, os
-G="/tmp/gwas"; D="/tmp/mr/data/ldsc"; os.makedirs(D,exist_ok=True)
-snps=set(pd.read_parquet("/tmp/ldsc/ldscores.parquet").SNP.astype(str))
+G=f"{ROOT}/gwas"; D=f"{ROOT}/mr/data/ldsc"; os.makedirs(D,exist_ok=True)
+snps=set(pd.read_parquet(f"{ROOT}/ldsc/ldscores.parquet").SNP.astype(str))
 print("LD-score SNPs:",len(snps),flush=True)
 FG={'rsids':'rsid','ref':'oa','alt':'ea','pval':'p','beta':'beta','sebeta':'se','af_alt':'eaf'}
 HM={'hm_rsid':'rsid','hm_effect_allele':'ea','hm_other_allele':'oa','hm_beta':'beta',

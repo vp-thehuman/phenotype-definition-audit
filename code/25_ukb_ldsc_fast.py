@@ -1,9 +1,11 @@
 """Fast equivalent of code/13_ldsc.py: same WLS + 200-block jackknife,
 computed from block sufficient statistics instead of refitting."""
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, json, os, itertools
-LD=pd.read_parquet('/tmp/ld/ldscores.parquet').rename(columns={'SNP':'rsid'})
+LD=pd.read_parquet(f'{ROOT}/ld/ldscores.parquet').rename(columns={'SNP':'rsid'})
 M=len(LD)
-D='/tmp/ukb/ss'
+D=f'{ROOT}/ukb/ss'
 BL=200
 def blocks(n,seed=0):
     idx=np.arange(n); np.random.default_rng(seed).shuffle(idx)
@@ -46,7 +48,7 @@ class Store:
         x=self.l2[ok]*np.sqrt(self.neff[a]*self.neff[b])/M; y=za[ok]*zb[ok]
         r,se=jk_wls(x,y,self.w[ok],self.lab[ok]); return r,se,int(ok.sum())
 if __name__=='__main__':
-    cfg=json.load(open('/tmp/config.json'))
+    cfg=json.load(open(f'{ROOT}/config.json'))
     names=[n for n in cfg['all'] if os.path.exists(f"{D}/{n}.parquet")]
     miss=[n for n in cfg['all'] if n not in names]
     print("loaded",len(names),"missing",miss,flush=True)
@@ -54,7 +56,7 @@ if __name__=='__main__':
     H={}
     for n in names:
         v,se=S.h2(n); H[n]={'h2':v,'se':se,'z':v/se if se>0 else np.nan}
-    json.dump(H,open('/tmp/ukb/h2.json','w'),indent=1)
+    json.dump(H,open(f'{ROOT}/ukb/h2.json','w'),indent=1)
     print("h2 done",flush=True)
     need=set(); conts=[c for c in cfg['contaminants'] if c in names]
     for f,arms in cfg['families'].items():
@@ -73,5 +75,5 @@ if __name__=='__main__':
     R['h1']=R.t1.map(lambda t:H[t]['h2']); R['h2_']=R.t2.map(lambda t:H[t]['h2'])
     den=np.sqrt(np.abs(R.h1*R.h2_))
     R['rg']=R.rho/den*np.sign(R.h1*R.h2_); R['rg_se']=R.rho_se/den
-    R.to_csv('/tmp/ukb/rg_pairs.csv',index=False)
+    R.to_csv(f'{ROOT}/ukb/rg_pairs.csv',index=False)
     print("RGDONE",len(R))

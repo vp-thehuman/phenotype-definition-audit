@@ -6,9 +6,11 @@ regressions and three heritabilities, all estimated on the same SNPs and the sam
 covariance between them; here the whole statistic is re-formed inside each
 delete-one-block replicate, which is exact.
 """
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, json, os
-LD=pd.read_parquet('/tmp/ld/ldscores.parquet').rename(columns={'SNP':'rsid'})
-M=len(LD); D='/tmp/ukb/ss'; BL=200
+LD=pd.read_parquet(f'{ROOT}/ld/ldscores.parquet').rename(columns={'SNP':'rsid'})
+M=len(LD); D=f'{ROOT}/ukb/ss'; BL=200
 
 def _blocks(n,seed=0):
     idx=np.arange(n); np.random.default_rng(seed).shuffle(idx)

@@ -10,9 +10,11 @@ ratio, so rg is robust to the effective-N proxy used here. Heritability on this
 scale is NOT interpreted, because the LD scores are computed on a thinned SNP set
 and are therefore uniformly deflated.
 """
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, itertools, os, json
-D="/tmp/mr/data/ldsc"
-ld=pd.read_parquet("/tmp/ldsc/ldscores.parquet").rename(columns={'SNP':'rsid'})
+D=f"{ROOT}/mr/data/ldsc"
+ld=pd.read_parquet(f"{ROOT}/ldsc/ldscores.parquet").rename(columns={'SNP':'rsid'})
 M=len(ld)
 comp={'A':'T','T':'A','C':'G','G':'C'}
 
@@ -71,5 +73,5 @@ for a,b in itertools.combinations(names,2):
     rows.append(dict(trait1=a,trait2=b,n_snp=k,rg=float(np.clip(rg,-1.5,1.5)),rg_se=float(rgse),
                      z=float(rg/rgse) if rgse>0 else np.nan))
     print(f"rg {a:20s} {b:20s} {np.clip(rg,-1.5,1.5): .3f} ({rgse:.3f})",flush=True)
-pd.DataFrame(rows).to_csv("/tmp/mr/out/Table4_genetic_correlations.csv",index=False)
-json.dump({k:float(v) for k,v in H.items()},open("/tmp/mr/out/h2_thinned_scale.json","w"),indent=2)
+pd.DataFrame(rows).to_csv(f"{ROOT}/mr/out/Table4_genetic_correlations.csv",index=False)
+json.dump({k:float(v) for k,v in H.items()},open(f"{ROOT}/mr/out/h2_thinned_scale.json","w"),indent=2)

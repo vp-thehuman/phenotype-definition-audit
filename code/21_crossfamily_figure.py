@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, matplotlib
 matplotlib.use("Agg"); import matplotlib.pyplot as plt
-O="/tmp/mr/out"
+O=f"{ROOT}/mr/out"
 INK="#1a1a1a"; MUTED="#6b6b6b"; GRID="#e3e3e3"; BLUE="#2f6f8f"; RED="#a8443a"; NULLC="#b0b0b0"
 plt.rcParams.update({"font.family":"DejaVu Sans","font.size":9,"axes.edgecolor":GRID,
  "axes.linewidth":0.8,"text.color":INK,"xtick.color":MUTED,"ytick.color":INK,"figure.dpi":300})

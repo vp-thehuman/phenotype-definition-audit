@@ -7,8 +7,10 @@ attenuation factor. Deming regression (errors in both variables) estimates lambd
 Key point: an MR ratio estimate beta_y/beta_x is invariant to lambda; an observational
 association is not. That asymmetry is the mechanism this study is really about.
 """
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, itertools, json
-D="/tmp/mr/data"
+D=f"{ROOT}/mr/data"
 EXPS=["E1_EAGLE_criteria","E2_UKB_selfreport","E3_UKB_ICD","E4_allergic_broad","E5_BUDU_meta"]
 LAB={"E1_EAGLE_criteria":"Clinician criteria (EAGLE)","E2_UKB_selfreport":"Self-report (UKB)",
      "E3_UKB_ICD":"Hospital ICD (UKB)","E4_allergic_broad":"Broad allergic composite",
@@ -47,9 +49,9 @@ for e in EXPS:
     rows.append(dict(definition=e,label=LAB[e],n_shared=len(m),lambda_vs_EAGLE=float(lam),pearson_r=r))
     print(f"{LAB[e]:32s} nSNP={len(m):>4}  lambda={lam:6.3f}  r={r:.3f}")
 t=pd.DataFrame(rows)
-t.to_csv("/tmp/mr/out/Table2_definition_concordance.csv",index=False)
+t.to_csv(f"{ROOT}/mr/out/Table2_definition_concordance.csv",index=False)
 l=t.lambda_vs_EAGLE.dropna()
 print(f"\nlambda spans {l.min():.3f} to {l.max():.3f}  =>  {l.max()/l.min():.1f}-fold difference in "
       f"how strongly each definition captures liability")
 print("mean |r| across definitions:",round(t.pearson_r.mean(),3))
-json.dump(scales,open("/tmp/mr/out/scale_factors.json","w"),indent=2)
+json.dump(scales,open(f"{ROOT}/mr/out/scale_factors.json","w"),indent=2)

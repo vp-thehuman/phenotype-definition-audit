@@ -1,5 +1,6 @@
+ROOT=${ROOT:-/tmp}
 B=https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502
-cd /tmp/ld
+cd ${ROOT}/ld
 dl(){ c=$1
   [ -f chr$c.vcf.gz ] && return 0
   [ -f out2/ld_chr$c.parquet ] && return 0
@@ -7,4 +8,4 @@ dl(){ c=$1
 }
 export -f dl; export B
 seq 1 22 | xargs -n1 -P5 -I{} bash -c 'dl {}'
-touch /tmp/ld/fetch2.flag
+touch ${ROOT}/ld/fetch2.flag

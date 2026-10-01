@@ -7,9 +7,11 @@ or genotyping. It IS confounded with case count, which is why instrument counts
 collapse for the strict definitions and MR is not attempted here. The index does
 not need instruments.
 """
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, itertools, json, os
-D="/tmp/mr/data/ldsc"; O="/tmp/mr/out"
-ld=pd.read_parquet("/tmp/ldsc/ldscores.parquet").rename(columns={'SNP':'rsid'}); M=len(ld)
+D=f"{ROOT}/mr/data/ldsc"; O=f"{ROOT}/mr/out"
+ld=pd.read_parquet(f"{ROOT}/ldsc/ldscores.parquet").rename(columns={'SNP':'rsid'}); M=len(ld)
 comp={'A':'T','T':'A','C':'G','G':'C'}
 NAMES=["DEP_1sym","DEP_2sym","DEP_3sym","DEP_45sym","DEP_cidi","CON_neuroticism"]
 LAB={"DEP_1sym":"1 endorsed measure","DEP_2sym":"2 endorsed measures","DEP_3sym":"3 endorsed measures",

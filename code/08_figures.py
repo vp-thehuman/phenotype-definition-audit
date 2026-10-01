@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, matplotlib
 matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from matplotlib.ticker import FixedLocator
 
-r=pd.read_csv("/tmp/mr/out/mr_results_v2.csv"); het=pd.read_csv("/tmp/mr/out/heterogeneity_v2.csv")
-con=pd.read_csv("/tmp/mr/out/Table2_definition_concordance.csv")
+r=pd.read_csv(f"{ROOT}/mr/out/mr_results_v2.csv"); het=pd.read_csv(f"{ROOT}/mr/out/heterogeneity_v2.csv")
+con=pd.read_csv(f"{ROOT}/mr/out/Table2_definition_concordance.csv")
 ORDER=["E1_EAGLE_criteria","E3_UKB_ICD","E5_BUDU_meta","E2_UKB_selfreport","E4_allergic_broad"]
 LAB={"E1_EAGLE_criteria":"Clinician criteria\nEAGLE, 18,900 cases",
      "E3_UKB_ICD":"Hospital ICD record\nUK Biobank, 12,176 cases",
@@ -53,8 +55,8 @@ fig.suptitle("How atopic dermatitis is defined changes the Mendelian randomisati
              fontsize=13,color=INK,x=0.006,ha="left",y=1.005,weight="bold")
 fig.text(0.006,0.845,"Same outcome, same pipeline, identical clumping (r²<0.001, 10 Mb, 1000G EUR). Only the exposure case definition varies. "
          "Null across mental-health outcomes; strongly definition-dependent for asthma.",fontsize=8.3,color=MUTED,ha="left")
-fig.savefig("/tmp/mr/out/Fig1_forest.png",bbox_inches="tight",facecolor="white")
-fig.savefig("/tmp/mr/out/Fig1_forest.pdf",bbox_inches="tight",facecolor="white")
+fig.savefig(f"{ROOT}/mr/out/Fig1_forest.png",bbox_inches="tight",facecolor="white")
+fig.savefig(f"{ROOT}/mr/out/Fig1_forest.pdf",bbox_inches="tight",facecolor="white")
 
 # ---------------- Figure 2: liability capture vs estimate inflation
 a=r[r.outcome=="O4_FG_asthma"].merge(con,left_on="exposure",right_on="definition")
@@ -81,6 +83,6 @@ rr=np.corrcoef(a.lambda_vs_EAGLE,np.log(a.ivw_or))[0,1]
 ax.set_title("Looser definitions capture liability more weakly\nand inflate the MR estimate",
              fontsize=11.6,color=INK,loc="left",pad=10,weight="bold")
 ax.text(0.98,0.05,f"r = {rr:.2f}",transform=ax.transAxes,ha="right",fontsize=10,color=RED,weight="bold")
-fig2.savefig("/tmp/mr/out/Fig2_lambda_vs_estimate.png",bbox_inches="tight",facecolor="white")
-fig2.savefig("/tmp/mr/out/Fig2_lambda_vs_estimate.pdf",bbox_inches="tight",facecolor="white")
+fig2.savefig(f"{ROOT}/mr/out/Fig2_lambda_vs_estimate.png",bbox_inches="tight",facecolor="white")
+fig2.savefig(f"{ROOT}/mr/out/Fig2_lambda_vs_estimate.pdf",bbox_inches="tight",facecolor="white")
 print("figures written")

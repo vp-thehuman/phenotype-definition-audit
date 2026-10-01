@@ -1,7 +1,9 @@
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import sys, json, itertools, numpy as np, pandas as pd
-sys.path.insert(0,'/tmp/ukb')
+sys.path.insert(0,f'{ROOT}/ukb')
 import ldsc3
-cfg=json.load(open('/tmp/config.json'))
+cfg=json.load(open(f'{ROOT}/config.json'))
 names=[n for n in cfg['all']]
 S=ldsc3.Store(names)
 H={n:S.h2(n) for n in names}
@@ -62,7 +64,7 @@ def summarise(T,tag):
 
 if __name__=='__main__':
     main=run()
-    main.sort_values('excess_max',ascending=False).to_csv('/tmp/ukb/Table8_ukb_definition_scan.csv',index=False)
+    main.sort_values('excess_max',ascending=False).to_csv(f'{ROOT}/ukb/Table8_ukb_definition_scan.csv',index=False)
     sens=[summarise(main,'main: h2 z>=6, clinical reference, winsor 1.25')]
     for tag,kw in [('h2 z>=4',dict(hz=4.0)),('h2 z>=8',dict(hz=8.0)),
                    ('no winsorising',dict(winsor=0)),
@@ -72,6 +74,6 @@ if __name__=='__main__':
         try: sens.append(summarise(run(**kw),tag))
         except Exception as e: sens.append(dict(analysis=tag,families=f"ERROR {e}"))
     Ssum=pd.DataFrame(sens)
-    Ssum.to_csv('/tmp/ukb/Table10_sensitivity.csv',index=False)
+    Ssum.to_csv(f'{ROOT}/ukb/Table10_sensitivity.csv',index=False)
     pd.set_option('display.width',260)
     print(Ssum.to_string(index=False))

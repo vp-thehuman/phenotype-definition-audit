@@ -1,7 +1,9 @@
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np
 import matplotlib; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-T=pd.read_csv('/tmp/ukb/Table8_ukb_definition_scan.csv')
+T=pd.read_csv(f'{ROOT}/ukb/Table8_ukb_definition_scan.csv')
 A=T[~T.duplicate_definition].sort_values('excess_max')
 COL={'self-report':'#c44e52','touchscreen composite':'#dd8452','curated endpoint':'#4c72b0',
      'doctor-diagnosed Q':'#55a868','hospital ICD':'#8172b3'}
@@ -40,6 +42,6 @@ ax.set_title('By type of case definition (bar = median)',fontsize=10,loc='left',
 ax.grid(axis='x',color='0.9',zorder=0)
 for a in axes: a.spines[['top','right']].set_visible(False)
 plt.tight_layout()
-plt.savefig('/tmp/ukb/Fig6_ukb_definition_scan.png',dpi=200,bbox_inches='tight')
-plt.savefig('/tmp/ukb/Fig6_ukb_definition_scan.pdf',bbox_inches='tight')
+plt.savefig(f'{ROOT}/ukb/Fig6_ukb_definition_scan.png',dpi=200,bbox_inches='tight')
+plt.savefig(f'{ROOT}/ukb/Fig6_ukb_definition_scan.pdf',bbox_inches='tight')
 print("ok",len(A),len(dup))

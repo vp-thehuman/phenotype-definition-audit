@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """LD-score SNP set for the depression family and its candidate contaminant."""
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, os
-G="/tmp/gwas"; D="/tmp/mr/data/ldsc"; os.makedirs(D,exist_ok=True)
-snps=set(pd.read_parquet("/tmp/ldsc/ldscores.parquet").SNP.astype(str))
+G=f"{ROOT}/gwas"; D=f"{ROOT}/mr/data/ldsc"; os.makedirs(D,exist_ok=True)
+snps=set(pd.read_parquet(f"{ROOT}/ldsc/ldscores.parquet").SNP.astype(str))
 A={'hm_rsid':'rsid','hm_effect_allele':'ea','hm_other_allele':'oa','hm_beta':'beta',
    'hm_effect_allele_frequency':'eaf','standard_error':'se','p_value':'p'}
 B={'rsid':'rsid','effect_allele':'ea','other_allele':'oa','beta':'beta',

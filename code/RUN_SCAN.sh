@@ -1,4 +1,5 @@
 #!/bin/bash
+ROOT=${ROOT:-/tmp}
 # Reproduce the UK Biobank definition scan end to end, from nothing.
 #
 #   bash RUN_SCAN.sh
@@ -10,7 +11,7 @@
 #   rg + index + figures   ~5 min
 # Peak disk about 25 GB; nothing is kept except the SNP-level parquet files.
 #
-# Requires: plink2 on PATH or at /tmp/bin/plink2, python3 with
+# Requires: plink2 on PATH or at ${ROOT}/bin/plink2, python3 with
 # pandas numpy pyarrow matplotlib, curl. No R, no LDSC install.
 set -e
 ROOT=${ROOT:-/tmp}

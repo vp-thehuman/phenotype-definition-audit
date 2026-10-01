@@ -1,4 +1,6 @@
-import sys; sys.path.insert(0,'/tmp/ukb')
+import os
+ROOT=os.environ.get("ROOT","/tmp")
+import sys; sys.path.insert(0,f'{ROOT}/ukb')
 from ldsc import load,h2,rho
 import math
 tests=[('20002_1111','20002_1387','asthma SR vs hayfever SR'),

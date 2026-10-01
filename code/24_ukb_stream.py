@@ -1,11 +1,13 @@
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import sys,os,gzip,json,subprocess,pandas as pd,numpy as np
 shard=int(sys.argv[1]); nsh=int(sys.argv[2])
-W=pd.read_parquet('/tmp/ukb/whitelist.parquet')
+W=pd.read_parquet(f'{ROOT}/ukb/whitelist.parquet')
 wl={v:(r,a) for v,r,a in zip(W.variant,W.rsid,W.AF)}
 B="https://broad-ukb-sumstats-us-east-1.s3.amazonaws.com/round2/additive-tsvs"
-cfg=json.load(open('/tmp/config.json'))
+cfg=json.load(open(f'{ROOT}/config.json'))
 todo=[p for i,p in enumerate(cfg['all']) if i%nsh==shard]
-os.makedirs('/tmp/ukb/ss',exist_ok=True)
+os.makedirs(f'{ROOT}/ukb/ss',exist_ok=True)
 
 def fetch(p):
     url=f"{B}/{p}.gwas.imputed_v3.both_sexes.tsv.bgz"
@@ -33,7 +35,7 @@ def fetch(p):
     return rec
 
 for p in todo:
-    out=f'/tmp/ukb/ss/{p}.parquet'
+    out=f'{ROOT}/ukb/ss/{p}.parquet'
     if os.path.exists(out): continue
     rec=None
     for att in range(4):

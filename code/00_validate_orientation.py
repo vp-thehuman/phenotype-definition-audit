@@ -4,8 +4,10 @@ All five exposures measure (variants of) the same trait. On shared SNPs, after
 allele-matching, effect sizes must correlate POSITIVELY. A negative slope means
 a column-mapping/sign error somewhere.
 """
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, itertools
-D="/tmp/mr/data"
+D=f"{ROOT}/mr/data"
 EXPS=["E1_EAGLE_criteria","E2_UKB_selfreport","E3_UKB_ICD","E4_allergic_broad","E5_BUDU_meta"]
 d={e:pd.read_parquet(f"{D}/{e}.parquet") for e in EXPS}
 # rescale linear -> logOR so slopes are interpretable

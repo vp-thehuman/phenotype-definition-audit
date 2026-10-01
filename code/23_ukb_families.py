@@ -1,5 +1,7 @@
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import gzip,csv,json
-rows=list(csv.DictReader(gzip.open('/tmp/phen.tsv.bgz','rt',errors='replace'),delimiter='\t'))
+rows=list(csv.DictReader(gzip.open(f'{ROOT}/phen.tsv.bgz','rt',errors='replace'),delimiter='\t'))
 idx={x['phenotype']:x for x in rows}
 def nc(p):
     x=idx.get(p)
@@ -69,6 +71,6 @@ for f,arms in FAM.items():
     if len(keep)>=2: out[f]=keep
     else: drop.append((f,'FAMILY','<2 arms'))
 allp=sorted({a['pheno'] for v in out.values() for a in v} | set(CONT))
-json.dump({'families':out,'contaminants':CONT,'all':allp},open('/tmp/config.json','w'),indent=1)
+json.dump({'families':out,'contaminants':CONT,'all':allp},open(f'{ROOT}/config.json','w'),indent=1)
 print("families:",len(out),"arms:",sum(len(v) for v in out.values()),"contaminants:",len(CONT),"unique files:",len(allp))
 print("dropped:",drop)

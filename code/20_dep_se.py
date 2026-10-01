@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Standard errors for the depression-family correlations, to see which
 differences are real and which are noise."""
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np
-exec(open('/tmp/mr/code/19_family_index.py').read().split('dat={n:load(n)')[0])
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'19_family_index.py')).read().split('dat={n:load(n)')[0])
 dat={n:load(n) for n in NAMES}
 H={}; HS={}
 for n in NAMES:
@@ -26,7 +28,7 @@ for n in ["DEP_1sym","DEP_2sym","DEP_3sym","DEP_45sym"]:
     print(f"{LAB[n]:40s}{ref:>11.3f} ({refse:.3f}){obs:>14.3f} ({obsse:.3f}){exc:>9.3f}{se:>8.3f}")
 t=pd.DataFrame(rows)
 t['rg_cidi_neuroticism']=rc; t['rg_cidi_neuroticism_se']=rcse
-t.to_csv("/tmp/mr/out/Table7_depression_family_index.csv",index=False)
+t.to_csv(f"{ROOT}/mr/out/Table7_depression_family_index.csv",index=False)
 print("\nall four touchscreen definitions vs the CIDI reference:")
 print(f"  mean excess = {t.excess_rg.mean():.3f}; range {t.excess_rg.min():.3f} to {t.excess_rg.max():.3f}")
 print(f"  ordering by strictness? Spearman(cases, excess) = "

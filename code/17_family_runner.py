@@ -5,8 +5,10 @@ A family is a set of GWAS of the same trait that differ in case definition,
 one of which is nominated as the reference (strictest / best ascertained),
 plus a candidate contaminating condition.
 """
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, os, subprocess, sys, json
-G="/tmp/gwas"; D="/tmp/mr/data"; C="/tmp/mr/clump"
+G=f"{ROOT}/gwas"; D=f"{ROOT}/mr/data"; C=f"{ROOT}/mr/clump"
 HM_A={'hm_rsid':'rsid','hm_chrom':'chr','hm_pos':'pos','hm_effect_allele':'ea','hm_other_allele':'oa',
       'hm_beta':'beta','hm_effect_allele_frequency':'eaf','standard_error':'se','p_value':'p'}
 HM_B={'rsid':'rsid','chromosome':'chr','base_pair_location':'pos','effect_allele':'ea','other_allele':'oa',
@@ -47,7 +49,7 @@ for k in FAMILY:
     if os.path.exists(f"{C}/{k}.clumps"): print("clumped",k,flush=True); continue
     d=pd.read_parquet(f"{D}/{k}.parquet")
     d[['rsid','p']].rename(columns={'rsid':'ID','p':'P'}).to_csv(f"{C}/{k}.assoc",sep="\t",index=False)
-    subprocess.run(["/tmp/plink2","--bfile","/tmp/ld/EUR","--clump",f"{C}/{k}.assoc",
+    subprocess.run([f"{ROOT}/plink2","--bfile",f"{ROOT}/ld/EUR","--clump",f"{C}/{k}.assoc",
         "--clump-p1","5e-8","--clump-r2","0.001","--clump-kb","10000",
         "--clump-id-field","ID","--clump-p-field","P","--out",f"{C}/{k}","--silent"],
         capture_output=True)
