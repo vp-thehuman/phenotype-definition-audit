@@ -4,7 +4,7 @@ A screen for phenotype-definition contamination in GWAS used as Mendelian random
 
 Vishnupriya Kannan and Marie Loh, Lee Kong Chian School of Medicine, Nanyang Technological University, Singapore.
 
-> Status: research code for work under preparation (Genome Informatics 2026 abstract). Scripts use hard-coded `/tmp` paths and are being refactored. See [Known gaps](#known-gaps).
+> Status: research code for work under preparation (Genome Informatics 2026 abstract). Version 0.2 corrects the jackknife blocks, the negative-control rule and the multivariable MR, and makes the UK Biobank scan run from a clean clone. **The tables and figures in `results/` were produced by v0.1 and have not yet been regenerated**; see [CHANGELOG.md](CHANGELOG.md) and [Known gaps](#known-gaps).
 
 ## The problem
 
@@ -35,8 +35,10 @@ Five European AD definitions, seven outcomes, all public data.
 | Clinician criteria (EAGLE) | 1.00 | 0.00 | reference | clean |
 | Hospital ICD (UK Biobank) | 0.96 | −0.04 | 1.03 (0.88–1.21), p = 0.69 | clean, fully absorbed |
 | Pooled meta-analysis (2023) | 0.69 | −0.07 | 1.28 (1.02–1.61), p = 0.032 | partly contaminated |
-| Self-report (UK Biobank) | 0.29 | +0.38 | 1.57 (1.44–1.71), p = 1e-24 | contaminated |
+| Self-report (UK Biobank)¹ | 0.29 | +0.38 | 1.57 (1.44–1.71), p = 1e-24 | contaminated |
 | Broad allergic composite | 0.28 | +0.28 | 2.03 (1.79–2.31), p = 3e-28 | heavily contaminated |
+
+¹ Under verification. The linear-to-log-odds scale factor for this file (GCST90029017, Loh 2018) implies a case fraction of about 22%. UK Biobank self-reported eczema/dermatitis (20002_1452) is 2.6%; the touchscreen item *hayfever, allergic rhinitis or eczema* (6152_9) is 23%. If the file is the combined allergy/eczema phenotype, this arm contains rhinitis cases by construction and should be relabelled. `06_concordance.py` now prints this audit for every linear-model file.
 
 ## Worked example: depression
 
@@ -53,16 +55,19 @@ Contamination can belong to the measurement instrument rather than to the breadt
 
 ## Systematic scan: UK Biobank
 
-29 trait families from the Neale lab round-2 GWAS, 35 definition comparisons, 11 candidate contaminants, definition varying within one cohort and array. Outputs: `results/Table8_ukb_definition_scan.csv`, `results/Table10_sensitivity.csv`, `results/Fig6_ukb_definition_scan.png`.
+29 trait families from the Neale lab round-2 GWAS, 35 definition comparisons, 11 candidate contaminants, definition varying within one cohort and array. Negative controls (a curated endpoint that is the same ICD-10 code as the hospital arm) are fixed in advance in `23_ukb_families.py` and reported whatever their excess. Outputs: `results/Table8_ukb_definition_scan.csv`, `results/Table10_sensitivity.csv`, `results/Fig6_ukb_definition_scan.png`.
 
 ## Running it
 
 Dependencies: Python 3 (`pip install -r requirements.txt`), PLINK 2, curl. No R, no LDSC install.
 
 ```
-cd code
-bash RUN_SCAN.sh
+pip install -r requirements.txt
+python3 tests/test_core.py          # fast checks of the statistical core, no downloads
+ROOT=/path/to/workdir bash code/RUN_SCAN.sh
 ```
+
+All scripts read their working directory from `ROOT` (default `/tmp`). `plink2` must be on `PATH`, at `$ROOT/bin/plink2`, or given as `PLINK2=`.
 
 About two hours on two cores / 8 GB RAM, mostly download (1000 Genomes ~15 GB; 100 UK Biobank GWAS ~60 GB streamed, not stored). Peak disk about 25 GB.
 
@@ -73,15 +78,20 @@ About two hours on two cores / 8 GB RAM, mostly download (1000 Genomes ~15 GB; 1
 | `10`–`13` | LD scores from 1000G EUR, LD-score SNP extraction, MVMR, cross-trait LD score regression |
 | `14`–`16` | outcome ladder, contamination index, final figures |
 | `17`–`21` | applying the audit to a new trait family (depression), standard errors, cross-family figure |
-| `22a`–`22c` | 1000 Genomes panel and LD scores (uniform sampling fraction) |
-| `23`–`29` | UK Biobank scan: families and contaminants, streaming, jackknife, validation, scan, figure |
+| `22a`–`22c` | 1000 Genomes panel, EUR sample list and LD scores (uniform sampling fraction) |
+| `23`, `23b` | UK Biobank families, contaminant panel, a-priori negative controls; variant whitelist |
+| `24`–`29` | streaming, all genetic correlations (Table9), validation, scan with sensitivity analyses, figure |
+| `ldsc3.py` | shared LD score regression and jackknife engine used by 25, 25b, 28 and 29 |
+| `tests/` | unit checks of the five-sum WLS slope, leave-one-block-out, block construction, conditional F |
 
 ## Design choices
 
 - **Self-contained LD scores.** No dependency on the precomputed `eur_w_ld_chr` release; LD scores are computed from 1000 Genomes EUR (1 Mb window, bias-corrected r²), so the audit runs on any reference panel you can download. The thinned SNP set deflates LD scores, so heritability on this scale is not interpreted; genetic correlation is a ratio and is unaffected. The implementation reproduces published correlations (asthma–allergic rhinitis 0.834; depression–anxiety 0.882).
 - **Uniform SNP density.** The released build samples a fixed fraction (`--thin 0.065`) of MAF ≥ 0.05 SNPs per chromosome rather than a fixed count, which would make LD-score magnitude depend on chromosome length. Genetic correlations moved by < 0.05 between the two builds.
 - **Effective sample size from standard errors**, not reported counts, so files with incomplete metadata still run.
-- **Exact standard errors.** The index is re-formed inside each of 200 delete-one-block jackknife replicates (`25b`), since its three rg terms share SNPs and are not independent.
+- **Exact standard errors.** The index is re-formed inside each of 200 delete-one-block jackknife replicates (`ldsc3.py`, and `20_dep_se.py` for the depression family), since its three rg terms share SNPs and are not independent. Blocks are contiguous runs of SNPs in genomic order, as in reference LDSC; v0.1 used shuffled SNP sets, which understates standard errors when neighbouring SNPs are in LD.
+- **Negative controls fixed in advance.** Pairs where a curated endpoint is the same ICD-10 code as the hospital arm. v0.1 labelled a pair a control only if every excess was already below 0.02, so a control could not fail; that flag is still written as `duplicate_by_data_rule` for comparison.
+- **Multivariable MR.** The union of the two instrument lists is re-clumped before fitting, and conditional F is the Sanderson–Windmeijer statistic, which includes the reference exposure's standard errors (`12_mvmr.py`; v0.1 values are kept in `conditional_F_v01`).
 - **Winsorising** rg at 1.25 (GWAS ATLAS convention); results unchanged without it (Table10).
 - **Rare binary traits.** Neale round-2 fits linear models to 0/1 phenotypes. Arms require ≥ 2,000 cases, and Table10 restricts to prevalence ≥ 1%. The ordering by definition type survives; the single most extreme result (noninfectious colitis vs hospital-coded ulcerative colitis) does not and should be quoted with that caveat.
 - **The reference is the best available arm, not a gold standard.** Contamination shared by a definition and its reference is invisible to the index, biasing it towards the null. Table10 re-runs with two alternative reference rules; the ranking by definition type is preserved.
@@ -93,8 +103,10 @@ About two hours on two cores / 8 GB RAM, mostly download (1000 Genomes ~15 GB; 1
 
 ## Known gaps
 
-- `28_ukb_validation.py` imports a helper module `ldsc` (`load`, `h2`, `rho`) and `29_ukb_scan.py` imports `ldsc3` from `/tmp/ukb`; `24_ukb_stream.py` reads `/tmp/ukb/whitelist.parquet`. These helpers are not yet in the repository, so `RUN_SCAN.sh` does not yet run end to end from a fresh clone.
-- Paths are hard-coded under `/tmp`.
+- **Results not regenerated.** Everything in `results/` comes from v0.1. Re-running with v0.2 will change standard errors (contiguous blocks), the negative-control set (five a-priori pairs; touchscreen versus self-reported hypertension becomes an informative comparison), Table7 standard errors, and the MVMR instrument sets and conditional F. Point estimates of rg and of the index are unchanged by the block fix.
+- **The 'self-report' AD arm** needs its phenotype definition confirmed (footnote ¹ above).
+- **AD and depression families (scripts 00–21) need inputs you supply:** the GWAS files in `$ROOT/gwas` (sources in the pre-registration) and a 1000 Genomes EUR PLINK set at `$ROOT/ld/EUR` for clumping and for `10_ldscores.sh`. `10_ldscores.sh` is the fixed-count LD build used for those families; the UK Biobank scan uses the fixed-fraction build from `22b`.
+- **LD score regression is simplified** relative to the reference software: weights are 1/max(LD score, 1) without the heteroskedasticity term, and there is no two-step estimator or intercept constraint. Genetic correlations reproduce published values (above).
 
 ## Citation
 

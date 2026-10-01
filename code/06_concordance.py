@@ -55,3 +55,17 @@ print(f"\nlambda spans {l.min():.3f} to {l.max():.3f}  =>  {l.max()/l.min():.1f}
       f"how strongly each definition captures liability")
 print("mean |r| across definitions:",round(t.pearson_r.mean(),3))
 json.dump(scales,open(f"{ROOT}/mr/out/scale_factors.json","w"),indent=2)
+
+# Scale audit: mu(1-mu) is the variance of the 0/1 trait, so it reveals the case
+# fraction of each linear-model file. Compare with what the file is supposed to be.
+# (v0.2) For E2 this gives about 22%; UK Biobank self-reported eczema/dermatitis
+# (20002_1452) is 2.6%, while 'hayfever, allergic rhinitis or eczema' (6152_9) is 23%.
+EXPECTED={"E2_UKB_selfreport":"self-reported eczema; 20002_1452 is 2.6% in UK Biobank",
+          "E3_UKB_ICD":"12,176 / 484,598 = 2.5%"}
+for e,v in scales.items():
+    mu=(1-np.sqrt(max(1-4*v,0)))/2
+    print(f"scale audit {LAB[e]:28s} mu(1-mu)={v:.4f} -> implied case fraction {mu:.1%}"
+          f"   expected: {EXPECTED.get(e,'?')}")
+    if e=="E2_UKB_selfreport" and mu>0.10:
+        print("  WARNING: implied case fraction is far above self-reported eczema prevalence; "
+              "check whether this file is a combined allergy/eczema phenotype (see CHANGELOG).")
