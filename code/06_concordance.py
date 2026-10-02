@@ -7,8 +7,10 @@ attenuation factor. Deming regression (errors in both variables) estimates lambd
 Key point: an MR ratio estimate beta_y/beta_x is invariant to lambda; an observational
 association is not. That asymmetry is the mechanism this study is really about.
 """
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, itertools, json
-D="/tmp/mr/data"
+D=f"{ROOT}/mr/data"
 EXPS=["E1_EAGLE_criteria","E2_UKB_selfreport","E3_UKB_ICD","E4_allergic_broad","E5_BUDU_meta"]
 LAB={"E1_EAGLE_criteria":"Clinician criteria (EAGLE)","E2_UKB_selfreport":"Self-report (UKB)",
      "E3_UKB_ICD":"Hospital ICD (UKB)","E4_allergic_broad":"Broad allergic composite",
@@ -47,9 +49,23 @@ for e in EXPS:
     rows.append(dict(definition=e,label=LAB[e],n_shared=len(m),lambda_vs_EAGLE=float(lam),pearson_r=r))
     print(f"{LAB[e]:32s} nSNP={len(m):>4}  lambda={lam:6.3f}  r={r:.3f}")
 t=pd.DataFrame(rows)
-t.to_csv("/tmp/mr/out/Table2_definition_concordance.csv",index=False)
+t.to_csv(f"{ROOT}/mr/out/Table2_definition_concordance.csv",index=False)
 l=t.lambda_vs_EAGLE.dropna()
 print(f"\nlambda spans {l.min():.3f} to {l.max():.3f}  =>  {l.max()/l.min():.1f}-fold difference in "
       f"how strongly each definition captures liability")
 print("mean |r| across definitions:",round(t.pearson_r.mean(),3))
-json.dump(scales,open("/tmp/mr/out/scale_factors.json","w"),indent=2)
+json.dump(scales,open(f"{ROOT}/mr/out/scale_factors.json","w"),indent=2)
+
+# Scale audit: mu(1-mu) is the variance of the 0/1 trait, so it reveals the case
+# fraction of each linear-model file. Compare with what the file is supposed to be.
+# (v0.2) For E2 this gives about 22%; UK Biobank self-reported eczema/dermatitis
+# (20002_1452) is 2.6%, while 'hayfever, allergic rhinitis or eczema' (6152_9) is 23%.
+EXPECTED={"E2_UKB_selfreport":"self-reported eczema; 20002_1452 is 2.6% in UK Biobank",
+          "E3_UKB_ICD":"12,176 / 484,598 = 2.5%"}
+for e,v in scales.items():
+    mu=(1-np.sqrt(max(1-4*v,0)))/2
+    print(f"scale audit {LAB[e]:28s} mu(1-mu)={v:.4f} -> implied case fraction {mu:.1%}"
+          f"   expected: {EXPECTED.get(e,'?')}")
+    if e=="E2_UKB_selfreport" and mu>0.10:
+        print("  WARNING: implied case fraction is far above self-reported eczema prevalence; "
+              "check whether this file is a combined allergy/eczema phenotype (see CHANGELOG).")

@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Extract instrument SNPs from the three outcome GWAS (streamed)."""
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, os, glob
-G="/tmp/gwas"; D="/tmp/mr/data"
+G=f"{ROOT}/gwas"; D=f"{ROOT}/mr/data"
 EXPS=["E1_EAGLE_criteria","E2_UKB_selfreport","E3_UKB_ICD","E4_allergic_broad","E5_BUDU_meta"]
 snps=set()
 for e in EXPS:
-    c=pd.read_csv(f"/tmp/mr/clump/{e}.clumps",sep=r"\s+")
+    c=pd.read_csv(f"{ROOT}/mr/clump/{e}.clumps",sep=r"\s+")
     snps |= set(c['ID'].astype(str))
 print("union instruments:",len(snps),flush=True)
 pd.Series(sorted(snps)).to_csv(f"{D}/instrument_union.txt",index=False,header=False)

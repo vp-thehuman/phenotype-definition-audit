@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Extract instruments from the extra FinnGen outcomes spanning a range of
 genetic relatedness to atopy."""
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, os
-G="/tmp/gwas"; D="/tmp/mr/data"
+G=f"{ROOT}/gwas"; D=f"{ROOT}/mr/data"
 snps=set(pd.read_csv(f"{D}/instrument_union.txt",header=None)[0].astype(str))
 FG={'rsids':'rsid','ref':'oa','alt':'ea','pval':'p','beta':'beta','sebeta':'se','af_alt':'eaf'}
 for fn,name in [("FG_ALLERG_RHINITIS.gz","O5_FG_rhinitis"),("FG_J10_COPD.gz","O6_FG_copd"),

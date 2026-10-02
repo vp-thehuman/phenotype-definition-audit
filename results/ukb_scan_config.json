@@ -616,6 +616,28 @@
   "6138_1": "College/University degree",
   "20116_2": "Current smoker"
  },
+ "controls": [
+  [
+   "KNEE_ARTHROSIS",
+   "M17"
+  ],
+  [
+   "M13_DORSALGIA",
+   "M54"
+  ],
+  [
+   "D3_ANAEMIA_IRONDEF",
+   "D50"
+  ],
+  [
+   "D3_OTHERANAEMIA",
+   "D64"
+  ],
+  [
+   "M13_SHOULDER",
+   "M75"
+  ]
+ ],
  "all": [
   "135",
   "137",

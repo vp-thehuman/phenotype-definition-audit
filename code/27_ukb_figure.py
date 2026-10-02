@@ -1,7 +1,9 @@
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np
 import matplotlib; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-T=pd.read_csv('/tmp/ukb/Table8_ukb_definition_scan.csv')
+T=pd.read_csv(f'{ROOT}/ukb/Table8_ukb_definition_scan.csv')
 A=T[~T.duplicate_definition].sort_values('excess_max')
 COL={'self-report':'#c44e52','touchscreen composite':'#dd8452','curated endpoint':'#4c72b0',
      'doctor-diagnosed Q':'#55a868','hospital ICD':'#8172b3'}
@@ -17,9 +19,9 @@ ax.text(0.376,len(A)-0.2,' AD self-report (+0.38)',color='#c44e52',fontsize=7.5,
 dup=T[T.duplicate_definition]
 ax.set_xlabel('Excess genetic correlation with worst-case contaminant of the panel\n'
               r'excess = $r_g(D,C)-r_g(D,R)\,r_g(R,C)$',fontsize=9)
-ax.set_title('Phenotype-definition contamination across 27 UK Biobank trait families\n'
+ax.set_title(f'Phenotype-definition contamination across {T.family.nunique()} UK Biobank trait families\n'
              f'one cohort, one array, one control set; {len(A)} definition-vs-reference pairs, '
-             f'{len(dup)} duplicate-definition negative controls returned 0',fontsize=10,loc='left')
+             f'{len(dup)} a-priori negative controls (curated endpoint = same ICD code): max excess {dup.excess_max.abs().max():.3f}',fontsize=10,loc='left')
 used=[t for t in COL if t in set(A.def_type)]
 h=[plt.Rectangle((0,0),1,1,color=COL[t]) for t in used]
 ax.legend(h,used,fontsize=7.5,loc='lower right',title='definition under test',title_fontsize=8)
@@ -40,6 +42,6 @@ ax.set_title('By type of case definition (bar = median)',fontsize=10,loc='left',
 ax.grid(axis='x',color='0.9',zorder=0)
 for a in axes: a.spines[['top','right']].set_visible(False)
 plt.tight_layout()
-plt.savefig('/tmp/ukb/Fig6_ukb_definition_scan.png',dpi=200,bbox_inches='tight')
-plt.savefig('/tmp/ukb/Fig6_ukb_definition_scan.pdf',bbox_inches='tight')
+plt.savefig(f'{ROOT}/ukb/Fig6_ukb_definition_scan.png',dpi=200,bbox_inches='tight')
+plt.savefig(f'{ROOT}/ukb/Fig6_ukb_definition_scan.pdf',bbox_inches='tight')
 print("ok",len(A),len(dup))

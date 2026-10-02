@@ -1,5 +1,11 @@
-import gzip,csv,json
-rows=list(csv.DictReader(gzip.open('/tmp/phen.tsv.bgz','rt',errors='replace'),delimiter='\t'))
+import os
+ROOT=os.environ.get("ROOT","/tmp")
+import gzip,csv,json,subprocess
+MANIFEST=f'{ROOT}/phen.tsv.bgz'
+if not os.path.exists(MANIFEST):   # Neale lab round-2 phenotype manifest
+    subprocess.run(['curl','-sL','--retry','5','-o',MANIFEST,
+        'https://broad-ukb-sumstats-us-east-1.s3.amazonaws.com/round2/annotations/phenotypes.both_sexes.tsv.bgz'],check=True)
+rows=list(csv.DictReader(gzip.open(f'{ROOT}/phen.tsv.bgz','rt',errors='replace'),delimiter='\t'))
 idx={x['phenotype']:x for x in rows}
 def nc(p):
     x=idx.get(p)
@@ -57,6 +63,10 @@ CONT={
  '6138_1':'College/University degree',
  '20116_2':'Current smoker',
 }
+# Negative controls, fixed before any excess is computed: a curated endpoint that is
+# the same ICD-10 code as the hospital arm, so the two definitions are identical.
+CONTROLS=[('KNEE_ARTHROSIS','M17'),('M13_DORSALGIA','M54'),('D3_ANAEMIA_IRONDEF','D50'),
+          ('D3_OTHERANAEMIA','D64'),('M13_SHOULDER','M75')]
 MINC=2000
 out={}; drop=[]
 for f,arms in FAM.items():
@@ -69,6 +79,6 @@ for f,arms in FAM.items():
     if len(keep)>=2: out[f]=keep
     else: drop.append((f,'FAMILY','<2 arms'))
 allp=sorted({a['pheno'] for v in out.values() for a in v} | set(CONT))
-json.dump({'families':out,'contaminants':CONT,'all':allp},open('/tmp/config.json','w'),indent=1)
+json.dump({'families':out,'contaminants':CONT,'controls':CONTROLS,'all':allp},open(f'{ROOT}/config.json','w'),indent=1)
 print("families:",len(out),"arms:",sum(len(v) for v in out.values()),"contaminants:",len(CONT),"unique files:",len(allp))
 print("dropped:",drop)

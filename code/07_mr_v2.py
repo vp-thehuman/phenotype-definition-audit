@@ -3,9 +3,11 @@
 explicit power / minimum detectable effect, and a correlation-aware treatment of
 the between-definition comparison.
 """
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, json, os
 from scipy import stats
-D="/tmp/mr/data"; OUT="/tmp/mr/out"
+D=f"{ROOT}/mr/data"; OUT=f"{ROOT}/mr/out"
 MAF_MIN=0.01
 EXPS={"E1_EAGLE_criteria":"Clinician criteria (EAGLE)","E2_UKB_selfreport":"Self-report (UK Biobank)",
       "E3_UKB_ICD":"Hospital ICD record (UK Biobank)","E4_allergic_broad":"Broad allergic composite",
@@ -71,7 +73,7 @@ def egger(bx,by,sy):
 exp_d={}; scales={}
 for ek in EXPS:
     x=pd.read_parquet(f"{D}/{ek}.parquet")
-    cl=pd.read_csv(f"/tmp/mr/clump/{ek}.clumps",sep=r"\s+")
+    cl=pd.read_csv(f"{ROOT}/mr/clump/{ek}.clumps",sep=r"\s+")
     x=x[x.rsid.isin(cl['ID'].astype(str))].copy()
     if x['scale'].iloc[0]=='linear':
         v=pd.read_parquet(f"{D}/{ek}.parquet").dropna(subset=['eaf','se','n'])

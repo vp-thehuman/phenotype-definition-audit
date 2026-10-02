@@ -8,9 +8,11 @@
 2. An outcome ladder: does definitional inflation scale with how genetically
    related the outcome is to the contaminating condition?
 """
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np
 from scipy import stats
-O="/tmp/mr/out"; D="/tmp/mr/data"
+O=f"{ROOT}/mr/out"; D=f"{ROOT}/mr/data"
 t=pd.read_csv(f"{O}/Table4_genetic_correlations.csv")
 def rg(a,b):
     if a==b: return 1.0
@@ -57,7 +59,7 @@ scales={'E2_UKB_selfreport':None,'E3_UKB_ICD':None}
 exp={}
 for e in KEY:
     x=pd.read_parquet(f"{D}/{e}.parquet")
-    cl=pd.read_csv(f"/tmp/mr/clump/{e}.clumps",sep=r"\s+")
+    cl=pd.read_csv(f"{ROOT}/mr/clump/{e}.clumps",sep=r"\s+")
     x=x[x.rsid.isin(cl['ID'].astype(str))].copy()
     if x['scale'].iloc[0]=='linear':
         v=pd.read_parquet(f"{D}/{e}.parquet").dropna(subset=['eaf','se','n'])

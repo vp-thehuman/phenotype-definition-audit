@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """MVMR needs every instrument's effect in EVERY exposure, including SNPs that do
 not reach significance in that exposure. Re-stream the full files for the union set."""
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, os
-G="/tmp/gwas"; D="/tmp/mr/data"
+G=f"{ROOT}/gwas"; D=f"{ROOT}/mr/data"
 snps=set(pd.read_csv(f"{D}/instrument_union.txt",header=None)[0].astype(str))
 print("union:",len(snps),flush=True)
 SPECS=[

@@ -10,15 +10,18 @@ ratio, so rg is robust to the effective-N proxy used here. Heritability on this
 scale is NOT interpreted, because the LD scores are computed on a thinned SNP set
 and are therefore uniformly deflated.
 """
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, itertools, os, json
-D="/tmp/mr/data/ldsc"
-ld=pd.read_parquet("/tmp/ldsc/ldscores.parquet").rename(columns={'SNP':'rsid'})
+D=f"{ROOT}/mr/data/ldsc"
+ld=pd.read_parquet(f"{ROOT}/ldsc/ldscores.parquet").rename(columns={'SNP':'rsid'})
+LDCOLS=['rsid','L2']+[c for c in ('CHR','BP') if c in ld.columns]; SORTK=[c for c in ('CHR','BP') if c in ld.columns] or ['rsid']
 M=len(ld)
 comp={'A':'T','T':'A','C':'G','G':'C'}
 
 def load(name):
     d=pd.read_parquet(f"{D}/{name}.parquet")
-    d=d.merge(ld[['rsid','L2']],on='rsid')
+    d=d.merge(ld[LDCOLS],on='rsid').sort_values(SORTK)
     d=d[(d.z.abs()<30)]                      # standard chi2 < 900 filter
     return d
 
@@ -30,7 +33,7 @@ def wls(x,y,w):
     return b,np.sqrt(np.diag(np.abs(cov)))
 
 def jackknife(f,n,blocks=200,seed=0):
-    idx=np.arange(n); np.random.default_rng(seed).shuffle(idx)
+    idx=np.arange(n)   # contiguous genomic blocks: data are sorted by CHR, BP
     parts=np.array_split(idx,blocks); full=f(idx)
     ests=np.array([f(np.concatenate([p for k,p in enumerate(parts) if k!=i])) for i in range(blocks)])
     se=np.sqrt((blocks-1)/blocks*np.sum((ests-ests.mean())**2))
@@ -45,6 +48,7 @@ def h2(d):
 
 def rg_pair(a,b):
     m=a.merge(b,on='rsid',suffixes=('_1','_2'))
+    m=m.sort_values([k+'_1' for k in SORTK if k!='rsid'] or ['rsid']).reset_index(drop=True)
     sign=np.where(m.ea_1==m.ea_2,1,np.where(m.ea_1==m.ea_2.map(comp),1,
           np.where(m.ea_1==m.oa_2,-1,np.where(m.ea_1==m.oa_2.map(comp),-1,0))))
     m=m[sign!=0].copy(); m['z2a']=m.z_2.values*sign[sign!=0]
@@ -71,5 +75,5 @@ for a,b in itertools.combinations(names,2):
     rows.append(dict(trait1=a,trait2=b,n_snp=k,rg=float(np.clip(rg,-1.5,1.5)),rg_se=float(rgse),
                      z=float(rg/rgse) if rgse>0 else np.nan))
     print(f"rg {a:20s} {b:20s} {np.clip(rg,-1.5,1.5): .3f} ({rgse:.3f})",flush=True)
-pd.DataFrame(rows).to_csv("/tmp/mr/out/Table4_genetic_correlations.csv",index=False)
-json.dump({k:float(v) for k,v in H.items()},open("/tmp/mr/out/h2_thinned_scale.json","w"),indent=2)
+pd.DataFrame(rows).to_csv(f"{ROOT}/mr/out/Table4_genetic_correlations.csv",index=False)
+json.dump({k:float(v) for k,v in H.items()},open(f"{ROOT}/mr/out/h2_thinned_scale.json","w"),indent=2)

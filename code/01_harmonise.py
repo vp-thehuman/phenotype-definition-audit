@@ -3,8 +3,10 @@
 Standard schema: rsid, chr, pos, ea, oa, eaf, beta, se, p, n, scale
 Match key throughout is rsID (avoids b37/b38 liftover: FinnGen R11 is GRCh38).
 """
+import os
+ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, os
-G="/tmp/gwas"; OUT="/tmp/mr/data"; os.makedirs(OUT,exist_ok=True)
+G=f"{ROOT}/gwas"; OUT=f"{ROOT}/mr/data"; os.makedirs(OUT,exist_ok=True)
 PTHRESH=1e-5
 COLS=['rsid','chr','pos','ea','oa','eaf','beta','se','p','n','scale']
 
