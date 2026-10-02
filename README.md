@@ -70,7 +70,8 @@ Dependencies: Python 3 (`pip install -r requirements.txt`), PLINK 2, curl. No R,
 ```
 pip install -r requirements.txt
 python3 tests/test_core.py          # fast checks of the statistical core, no downloads
-ROOT=/path/to/workdir bash code/RUN_SCAN.sh
+ROOT=/path/to/workdir bash code/RUN_SCAN.sh       # UK Biobank scan (Table8-10, Fig6)
+ROOT=/path/to/workdir bash code/RUN_FAMILIES.sh   # AD and depression families (Tables 1-7, Figs 1-5)
 ```
 
 All scripts read their working directory from `ROOT` (default `/tmp`). `plink2` must be on `PATH`, at `$ROOT/bin/plink2`, or given as `PLINK2=`.
