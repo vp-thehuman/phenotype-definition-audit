@@ -38,7 +38,7 @@ Five European AD definitions, seven outcomes, all public data (sources in `code/
 | Hay fever, rhinitis or eczema (UK Biobank)¹ | 0.29 | +0.49 | 1.60 (1.46–1.75), p = 1e-23 | 13.1 | contaminated |
 | Broad allergic composite | 0.28 | +0.49 | 2.06 (1.79–2.37), p = 2e-23 | 5.3 | contaminated |
 
-The screen ranks the definitions as MVMR does except for the pooled meta-analysis, whose conditional estimate is not identifiable (conditional F 1.0): Pearson r = 0.84 between excess and log MVMR OR, Spearman 0.6, k = 4, descriptive. Outcome triage: genetic correlation of each outcome with allergic rhinitis predicts its between-definition spread (r = 0.90, k = 7).
+The screen separates the two definitions MVMR retains (excess 0.49 and 0.49) from the hospital-ICD definition it absorbs (0.08). It does not flag the pooled meta-analysis (0.04), whose conditional estimate is not identifiable (conditional F 1.0). Pearson r = 0.84 between excess and log MVMR OR (Spearman 0.6, k = 4), descriptive. Outcome triage: genetic correlation of each outcome with allergic rhinitis predicts its between-definition spread (r = 0.90, k = 7).
 
 ¹ GCST90029017 (Loh 2018) is catalogued as "eczema" and was labelled self-reported eczema in v0.1. It is the UK Biobank touchscreen item *hayfever, allergic rhinitis or eczema*: its implied case fraction is 22% (the item's prevalence is 23%; self-reported eczema/dermatitis, 20002_1452, is 2.6%), and its genetic correlation is 0.98 (SE 0.04) with that item and 0.47 (SE 0.08) with self-reported eczema. It contains rhinitis cases by construction.
 
