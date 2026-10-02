@@ -1,0 +1,262 @@
+== 01
+E1_EAGLE_criteria      scanned= 11,296,420  p<1e-5=  2,028  gws(5e-8)=   751  min_p=2.80e-27
+E2_UKB_selfreport      scanned= 12,004,186  p<1e-5= 35,696  gws(5e-8)=17,138  min_p=1.30e-115
+E3_UKB_ICD             scanned=  9,689,034  p<1e-5=  5,438  gws(5e-8)= 2,182  min_p=3.30e-110
+E4_allergic_broad      scanned=  8,303,354  p<1e-5= 17,532  gws(5e-8)= 8,927  min_p=8.92e-52
+E5_BUDU_meta           scanned= 12,147,822  p<1e-5= 11,168  gws(5e-8)= 5,195  min_p=3.25e-129
+exposures done
+== 10
+LD scores for the AD/depression families: 383878 SNPs
+== 11
+LD-score SNPs: 383878
+AD_criteria          363,277 SNPs  N_eff=6,756
+AD_selfreport        347,640 SNPs  N_eff=2,686,304
+AD_icd               382,368 SNPs  N_eff=19,432,681
+AD_allergic_broad    358,342 SNPs  N_eff=60,142
+AD_meta              378,828 SNPs  N_eff=45,561
+OUT_asthma           364,949 SNPs  N_eff=41,346
+OUT_rhinitis         364,949 SNPs  N_eff=13,099
+OUT_copd             364,949 SNPs  N_eff=18,733
+OUT_ibd              364,949 SNPs  N_eff=9,412
+OUT_migraine         364,949 SNPs  N_eff=21,299
+OUT_depression       364,949 SNPs  N_eff=43,840
+OUT_anxiety          364,949 SNPs  N_eff=27,244
+done
+== 13
+traits: ['AD_allergic_broad', 'AD_criteria', 'AD_icd', 'AD_meta', 'AD_selfreport', 'OUT_anxiety', 'OUT_asthma', 'OUT_copd', 'OUT_depression', 'OUT_ibd', 'OUT_migraine', 'OUT_rhinitis']
+h2* AD_allergic_broad     0.2173 (se 0.0259)  [thinned-LD scale, not interpretable as h2]
+h2* AD_criteria           0.3287 (se 0.0987)  [thinned-LD scale, not interpretable as h2]
+h2* AD_icd                0.0002 (se 0.0001)  [thinned-LD scale, not interpretable as h2]
+h2* AD_meta               0.1421 (se 0.0284)  [thinned-LD scale, not interpretable as h2]
+h2* AD_selfreport         0.0095 (se 0.0010)  [thinned-LD scale, not interpretable as h2]
+h2* OUT_anxiety           0.3396 (se 0.0313)  [thinned-LD scale, not interpretable as h2]
+h2* OUT_asthma            0.4282 (se 0.0535)  [thinned-LD scale, not interpretable as h2]
+h2* OUT_copd              0.5883 (se 0.0784)  [thinned-LD scale, not interpretable as h2]
+h2* OUT_depression        0.3021 (se 0.0238)  [thinned-LD scale, not interpretable as h2]
+h2* OUT_ibd               0.8487 (se 0.1560)  [thinned-LD scale, not interpretable as h2]
+h2* OUT_migraine          0.3702 (se 0.0409)  [thinned-LD scale, not interpretable as h2]
+h2* OUT_rhinitis          0.3739 (se 0.0654)  [thinned-LD scale, not interpretable as h2]
+rg AD_allergic_broad    AD_criteria           0.756 (0.126)
+rg AD_allergic_broad    AD_icd                0.578 (0.090)
+rg AD_allergic_broad    AD_meta               0.800 (0.098)
+rg AD_allergic_broad    AD_selfreport         0.911 (0.104)
+rg AD_allergic_broad    OUT_anxiety           0.211 (0.045)
+rg AD_allergic_broad    OUT_asthma            0.611 (0.079)
+rg AD_allergic_broad    OUT_copd              0.104 (0.050)
+rg AD_allergic_broad    OUT_depression        0.215 (0.043)
+rg AD_allergic_broad    OUT_ibd               0.040 (0.061)
+rg AD_allergic_broad    OUT_migraine          0.171 (0.046)
+rg AD_allergic_broad    OUT_rhinitis          0.861 (0.099)
+rg AD_criteria          AD_icd                0.749 (0.204)
+rg AD_criteria          AD_meta               1.250 (0.219)
+rg AD_criteria          AD_selfreport         0.530 (0.101)
+rg AD_criteria          OUT_anxiety           0.074 (0.092)
+rg AD_criteria          OUT_asthma            0.324 (0.091)
+rg AD_criteria          OUT_copd              0.119 (0.097)
+rg AD_criteria          OUT_depression        0.130 (0.077)
+rg AD_criteria          OUT_ibd               0.004 (0.104)
+rg AD_criteria          OUT_migraine          0.139 (0.096)
+rg AD_criteria          OUT_rhinitis          0.498 (0.139)
+rg AD_icd               AD_meta               0.955 (0.174)
+rg AD_icd               AD_selfreport         0.498 (0.071)
+rg AD_icd               OUT_anxiety           0.116 (0.067)
+rg AD_icd               OUT_asthma            0.192 (0.078)
+rg AD_icd               OUT_copd             -0.081 (0.070)
+rg AD_icd               OUT_depression        0.097 (0.059)
+rg AD_icd               OUT_ibd              -0.012 (0.092)
+rg AD_icd               OUT_migraine          0.038 (0.074)
+rg AD_icd               OUT_rhinitis          0.453 (0.093)
+rg AD_meta              AD_selfreport         0.716 (0.086)
+rg AD_meta              OUT_anxiety           0.163 (0.052)
+rg AD_meta              OUT_asthma            0.421 (0.083)
+rg AD_meta              OUT_copd              0.046 (0.064)
+rg AD_meta              OUT_depression        0.197 (0.049)
+rg AD_meta              OUT_ibd               0.036 (0.090)
+rg AD_meta              OUT_migraine          0.162 (0.062)
+rg AD_meta              OUT_rhinitis          0.542 (0.095)
+rg AD_selfreport        OUT_anxiety           0.080 (0.037)
+rg AD_selfreport        OUT_asthma            0.366 (0.061)
+rg AD_selfreport        OUT_copd             -0.045 (0.037)
+rg AD_selfreport        OUT_depression        0.054 (0.036)
+rg AD_selfreport        OUT_ibd               0.077 (0.056)
+rg AD_selfreport        OUT_migraine          0.041 (0.040)
+rg AD_selfreport        OUT_rhinitis          0.758 (0.086)
+rg OUT_anxiety          OUT_asthma            0.342 (0.052)
+rg OUT_anxiety          OUT_copd              0.294 (0.055)
+rg OUT_anxiety          OUT_depression        0.868 (0.072)
+rg OUT_anxiety          OUT_ibd               0.181 (0.066)
+rg OUT_anxiety          OUT_migraine          0.354 (0.070)
+rg OUT_anxiety          OUT_rhinitis          0.281 (0.071)
+rg OUT_asthma           OUT_copd              0.660 (0.081)
+rg OUT_asthma           OUT_depression        0.442 (0.045)
+rg OUT_asthma           OUT_ibd               0.064 (0.072)
+rg OUT_asthma           OUT_migraine          0.341 (0.063)
+rg OUT_asthma           OUT_rhinitis          0.772 (0.118)
+rg OUT_copd             OUT_depression        0.417 (0.051)
+rg OUT_copd             OUT_ibd               0.064 (0.061)
+rg OUT_copd             OUT_migraine          0.158 (0.060)
+rg OUT_copd             OUT_rhinitis          0.377 (0.093)
+rg OUT_depression       OUT_ibd               0.095 (0.057)
+rg OUT_depression       OUT_migraine          0.474 (0.065)
+rg OUT_depression       OUT_rhinitis          0.285 (0.064)
+rg OUT_ibd              OUT_migraine          0.054 (0.059)
+rg OUT_ibd              OUT_rhinitis          0.093 (0.082)
+rg OUT_migraine         OUT_rhinitis          0.372 (0.095)
+== 18
+DEP_1sym           382,367 SNPs
+DEP_2sym           382,367 SNPs
+DEP_3sym           382,367 SNPs
+DEP_45sym          382,367 SNPs
+DEP_cidi           382,367 SNPs
+CON_neuroticism    347,640 SNPs
+done
+== 19
+1 endorsed measure                     rg_ref= 0.657  rg_neuroticism= 0.723  expected= 0.304  EXCESS= 0.419
+2 endorsed measures                    rg_ref= 0.702  rg_neuroticism= 0.683  expected= 0.325  EXCESS= 0.358
+3 endorsed measures                    rg_ref= 0.552  rg_neuroticism= 0.610  expected= 0.255  EXCESS= 0.355
+4-5 endorsed measures                  rg_ref= 0.490  rg_neuroticism= 0.644  expected= 0.227  EXCESS= 0.417
+CIDI lifetime depression (reference)   rg_ref= 1.000  rg_neuroticism= 0.463  expected= 0.463  EXCESS= 0.000
+
+rg(CIDI depression, neuroticism) = 0.463
+== 20
+rg(CIDI, neuroticism) = 0.463 (0.041)
+
+definition                                      rg vs CIDI     rg vs neuroticism   excess      se  se v0.1
+1 endorsed measure                            0.657 (0.081)         0.723 (0.044)    0.419   0.051    0.064
+2 endorsed measures                           0.702 (0.082)         0.683 (0.051)    0.358   0.051    0.070
+3 endorsed measures                           0.552 (0.081)         0.610 (0.050)    0.355   0.050    0.067
+4-5 endorsed measures                         0.490 (0.093)         0.644 (0.057)    0.417   0.064    0.074
+
+all four touchscreen definitions vs the CIDI reference:
+  mean excess = 0.387; range 0.355 to 0.419
+  ordering by strictness? Spearman(cases, excess) = 0.40
+PART1DONE
+== 02_clump.sh
+E1_EAGLE_criteria  independent_instruments=12
+E2_UKB_selfreport  independent_instruments=157
+E3_UKB_ICD  independent_instruments=21
+E4_allergic_broad  independent_instruments=74
+E5_BUDU_meta  independent_instruments=62
+== 03_outcomes.py
+union instruments: 297
+O1_FG_depression     matched=  288
+O2_FG_anxiety        matched=  288
+O4_FG_asthma         matched=  288
+O3_PGC_MDD           matched=  282
+== 00_validate_orientation.py
+pair                                          nSNP    slope       r  verdict
+E1_EAGLE_criteria    vs E2_UKB_selfreport      764    0.287   0.922  OK
+E1_EAGLE_criteria    vs E3_UKB_ICD             691    0.923   0.976  OK
+E1_EAGLE_criteria    vs E4_allergic_broad      754    0.294   0.919  OK
+E1_EAGLE_criteria    vs E5_BUDU_meta          1236    0.644   0.963  OK
+E2_UKB_selfreport    vs E3_UKB_ICD            1232    2.147   0.875  OK
+E2_UKB_selfreport    vs E4_allergic_broad    10122    0.867   0.978  OK
+E2_UKB_selfreport    vs E5_BUDU_meta          3760    1.168   0.826  OK
+E3_UKB_ICD           vs E4_allergic_broad      977    0.311   0.854  OK
+E3_UKB_ICD           vs E5_BUDU_meta          2533    0.680   0.967  OK
+E4_allergic_broad    vs E5_BUDU_meta          2636    1.127   0.758  OK
+
+suspect pairs: 0
+== 06_concordance.py
+Self-report (UKB)                nSNP= 380  lambda= 0.289  r=0.935
+Hospital ICD (UKB)               nSNP= 565  lambda= 0.963  r=0.973
+Broad allergic composite         nSNP= 374  lambda= 0.284  r=0.927
+Pooled meta-analysis             nSNP= 697  lambda= 0.685  r=0.960
+
+lambda spans 0.284 to 1.000  =>  3.5-fold difference in how strongly each definition captures liability
+mean |r| across definitions: 0.959
+scale audit Self-report (UKB)            mu(1-mu)=0.1716 -> implied case fraction 22.0%   expected: self-reported eczema; 20002_1452 is 2.6% in UK Biobank
+  WARNING: implied case fraction is far above self-reported eczema prevalence; check whether this file is a combined allergy/eczema phenotype (see CHANGELOG).
+scale audit Hospital ICD (UKB)           mu(1-mu)=0.0249 -> implied case fraction 2.6%   expected: 12,176 / 484,598 = 2.5%
+== 07_mr_v2.py
+effective outcome N (from SEs): {'O1_FG_depression': 43859, 'O2_FG_anxiety': 27252, 'O3_PGC_MDD': 31411, 'O4_FG_asthma': 41338} 
+
+Clinician criteria (EAGLE)        -> Depression (FinnGen R11)             n=  12(-0) OR=1.009 (0.968-1.052) p=0.67
+Clinician criteria (EAGLE)        -> Anxiety (FinnGen R11)                n=  12(-0) OR=1.007 (0.964-1.051) p=0.77
+Clinician criteria (EAGLE)        -> MDD (PGC 2018, ex-23andMe)           n=  12(-0) OR=1.030 (0.975-1.088) p=0.3
+Clinician criteria (EAGLE)        -> Asthma (FinnGen R11) [positive con   n=  12(-0) OR=1.218 (1.130-1.313) p=2.8e-07
+Self-report (UK Biobank)          -> Depression (FinnGen R11)             n= 148(-0) OR=0.994 (0.959-1.030) p=0.73
+Self-report (UK Biobank)          -> Anxiety (FinnGen R11)                n= 146(-2) OR=1.001 (0.960-1.043) p=0.97
+Self-report (UK Biobank)          -> MDD (PGC 2018, ex-23andMe)           n= 147(-0) OR=1.020 (0.980-1.062) p=0.34
+Self-report (UK Biobank)          -> Asthma (FinnGen R11) [positive con   n= 134(-14) OR=1.494 (1.413-1.579) p=2.1e-45
+Hospital ICD record (UK Biobank   -> Depression (FinnGen R11)             n=  16(-0) OR=1.023 (0.972-1.077) p=0.38
+Hospital ICD record (UK Biobank   -> Anxiety (FinnGen R11)                n=  16(-0) OR=0.963 (0.916-1.012) p=0.14
+Hospital ICD record (UK Biobank   -> MDD (PGC 2018, ex-23andMe)           n=  16(-0) OR=1.046 (0.989-1.107) p=0.11
+Hospital ICD record (UK Biobank   -> Asthma (FinnGen R11) [positive con   n=  16(-0) OR=1.205 (1.098-1.323) p=8.7e-05
+Broad allergic composite          -> Depression (FinnGen R11)             n=  70(-0) OR=1.026 (0.977-1.078) p=0.3
+Broad allergic composite          -> Anxiety (FinnGen R11)                n=  70(-0) OR=1.006 (0.956-1.060) p=0.81
+Broad allergic composite          -> MDD (PGC 2018, ex-23andMe)           n=  66(-0) OR=1.049 (0.996-1.106) p=0.069
+Broad allergic composite          -> Asthma (FinnGen R11) [positive con   n=  57(-13) OR=1.750 (1.626-1.883) p=2.1e-50
+Pooled meta-analysis (2023)       -> Depression (FinnGen R11)             n=  62(-0) OR=1.014 (0.970-1.060) p=0.55
+Pooled meta-analysis (2023)       -> Anxiety (FinnGen R11)                n=  62(-0) OR=1.009 (0.969-1.051) p=0.67
+Pooled meta-analysis (2023)       -> MDD (PGC 2018, ex-23andMe)           n=  60(-0) OR=1.042 (0.997-1.090) p=0.069
+Pooled meta-analysis (2023)       -> Asthma (FinnGen R11) [positive con   n=  59(-3) OR=1.319 (1.233-1.412) p=1.2e-15
+
+=== BETWEEN-DEFINITION HETEROGENEITY ===
+Depression (FinnGen R11)               k=5 pooledOR=1.010 I2=  0% Qp=0.83 range=0.99-1.03 | EAGLE/UKB ratio=1.015 (p=0.58, detectable ratio >1.08)
+Anxiety (FinnGen R11)                  k=5 pooledOR=0.999 I2=  0% Qp=0.64 range=0.96-1.01 | EAGLE/UKB ratio=1.006 (p=0.85, detectable ratio >1.09)
+MDD (PGC 2018, ex-23andMe)             k=5 pooledOR=1.036 I2=  0% Qp=0.90 range=1.02-1.05 | EAGLE/UKB ratio=1.009 (p=0.79, detectable ratio >1.10)
+Asthma (FinnGen R11) [positive contr   k=5 pooledOR=1.411 I2= 94% Qp=0.00 range=1.21-1.75 | EAGLE/UKB ratio=0.816 (p=0.00, detectable ratio >1.14)
+== 09_exposure_matrix.py
+union: 297
+X1_EAGLE               matched= 282
+X2_UKB_selfreport      matched= 292
+X3_UKB_ICD             matched= 297
+X4_allergic_broad      matched= 288
+X5_BUDU                matched= 297
+== 12_mvmr.py
+Asthma      Self-report (UK Biobank)     n= 145 condF=  13.1 | univariable OR=1.642 -> conditional on criteria: OR=1.595 (1.456-1.748) p=1.4e-23
+Asthma      Hospital ICD (UK Biobank)    n=  19 condF=   4.4 | univariable OR=1.221 -> conditional on criteria: OR=0.999 (0.865-1.155) p=0.99
+Asthma      Broad allergic composite     n=  69 condF=   5.3 | univariable OR=2.018 -> conditional on criteria: OR=2.061 (1.788-2.374) p=1.5e-23
+Asthma      Pooled meta-analysis         n=  60 condF=   1.0 | univariable OR=1.363 -> conditional on criteria: OR=1.319 (1.005-1.733) p=0.046
+Depression  Self-report (UK Biobank)     n= 145 condF=  13.1 | univariable OR=0.998 -> conditional on criteria: OR=0.996 (0.947-1.048) p=0.88
+Depression  Hospital ICD (UK Biobank)    n=  19 condF=   4.4 | univariable OR=1.001 -> conditional on criteria: OR=1.000 (0.927-1.078) p=0.99
+Depression  Broad allergic composite     n=  69 condF=   5.3 | univariable OR=1.022 -> conditional on criteria: OR=0.992 (0.917-1.073) p=0.84
+Depression  Pooled meta-analysis         n=  60 condF=   1.0 | univariable OR=1.010 -> conditional on criteria: OR=0.992 (0.845-1.164) p=0.92
+== 14_outcome_ladder.py
+O5_FG_rhinitis     matched=288
+O6_FG_copd         matched=288
+O7_FG_ibd          matched=288
+O8_FG_migraine     matched=288
+== 15_index_and_ladder.py
+               label  rg_contaminant  expected_if_pure_AD  excess_rg  mvmr_conditional_OR
+  Clinician criteria           0.498                0.498      0.000                  NaN
+        Hospital ICD           0.453                0.373      0.080                0.999
+Pooled meta-analysis           0.542                0.498      0.044                1.319
+         Self-report           0.758                0.264      0.494                1.595
+  Allergic composite           0.861                0.376      0.485                2.061
+
+excess rg vs MVMR conditional OR: Pearson r=0.835, Spearman rho=0.60 (k=4)
+
+=== OUTCOME LADDER: does definitional spread scale with relatedness to the contaminant? ===
+          outcome  rg_with_rhinitis  pooled_OR     I2   Q_p  OR_min  OR_max  spread
+Allergic rhinitis             1.000      1.809 96.584 0.000   1.340   2.342   1.748
+           Asthma             0.772      1.464 96.209 0.000   1.205   2.047   1.698
+             COPD             0.377      1.107 76.253 0.002   1.046   1.246   1.192
+         Migraine             0.372      1.001  0.000 0.536   0.977   1.033   1.057
+       Depression             0.285      1.010  0.000 0.830   0.994   1.026   1.033
+          Anxiety             0.281      0.999  0.000 0.640   0.963   1.009   1.048
+              IBD             0.093      1.188  0.000 0.823   1.116   1.292   1.158
+
+rg(outcome, rhinitis) vs definitional spread: Pearson r=0.900 (k=7)
+== 08_figures.py
+figures written
+== 16_final_figures.py
+figures written
+== 17_family_runner.py
+DEP1_one         scanned= 9,019,332  p<1e-5= 3,542  gws=  694
+DEP2_two         scanned= 9,019,332  p<1e-5=   328  gws=    1
+DEP3_three       scanned= 9,019,332  p<1e-5=   533  gws=   57
+DEP4_fourfive    scanned= 9,019,332  p<1e-5=   297  gws=    4
+DEP5_cidi        scanned= 9,019,332  p<1e-5= 1,389  gws=   42
+NEUROTICISM      scanned=11,999,802  p<1e-5=30,550  gws=8,674
+DEP1_one         instruments=8
+DEP2_two         instruments=1
+DEP3_three       instruments=1
+DEP4_fourfive    instruments=2
+DEP5_cidi        instruments=2
+NEUROTICISM      instruments=116
+DEP union instruments: 129
+== 21_crossfamily_figure.py
+written
+PART2DONE

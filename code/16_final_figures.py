@@ -10,15 +10,15 @@ plt.rcParams.update({"font.family":"DejaVu Sans","font.size":9,"axes.edgecolor":
    "axes.linewidth":0.8,"text.color":INK,"xtick.color":MUTED,"ytick.color":INK,"figure.dpi":300})
 ORDER=["E1_EAGLE_criteria","E3_UKB_ICD","E5_BUDU_meta","E2_UKB_selfreport","E4_allergic_broad"]
 SHORT={"E1_EAGLE_criteria":"Clinician criteria","E3_UKB_ICD":"Hospital ICD",
-       "E5_BUDU_meta":"Pooled meta-analysis","E2_UKB_selfreport":"Self-report",
+       "E5_BUDU_meta":"Pooled meta-analysis","E2_UKB_selfreport":"Hay fever/rhinitis/eczema",
        "E4_allergic_broad":"Allergic composite"}
 
 # ============ FIG 3: the mechanism, MVMR dumbbell ============
 mv=pd.read_csv(f"{O}/Table3_mvmr.csv"); mv=mv[mv.outcome=="Asthma"]
 NAME={"Hospital ICD (UK Biobank)":"Hospital ICD","Pooled meta-analysis":"Pooled meta-analysis",
-      "Self-report (UK Biobank)":"Self-report","Broad allergic composite":"Allergic composite"}
+      "UKB hayfever/rhinitis/eczema":"Hay fever/rhinitis/eczema","Broad allergic composite":"Allergic composite"}
 mv["short"]=mv.definition.map(NAME)
-mv=mv.set_index("short").loc[["Hospital ICD","Pooled meta-analysis","Self-report","Allergic composite"]].reset_index()
+mv=mv.set_index("short").loc[["Hospital ICD","Pooled meta-analysis","Hay fever/rhinitis/eczema","Allergic composite"]].reset_index()
 fig,ax=plt.subplots(figsize=(10.4,4.1))
 y=np.arange(len(mv))[::-1]
 for yy,(_,r) in zip(y,mv.iterrows()):

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Extract instrument SNPs from the three outcome GWAS (streamed)."""
+"""Extract instrument SNPs from the outcome GWAS (streamed): FinnGen depression, anxiety and
+asthma (positive control), and PGC MDD."""
 import os
 ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, os, glob
@@ -39,6 +40,8 @@ def grab(path,name,ren,comp,scale,beta_from_or=False,sep="\t",eaf_col=None,nfix=
 grab(f"{G}/FG_DEP.gz","O1_FG_depression",
      {'rsids':'rsid','ref':'oa','alt':'ea','pval':'p','sebeta':'se','af_alt':'eaf'},'gzip','logOR',nfix=None)
 grab(f"{G}/FG_ANX.gz","O2_FG_anxiety",
+     {'rsids':'rsid','ref':'oa','alt':'ea','pval':'p','sebeta':'se','af_alt':'eaf'},'gzip','logOR',nfix=None)
+grab(f"{G}/FG_ASTHMA.gz","O4_FG_asthma",     # positive control (v0.1 extracted this outside the repository)
      {'rsids':'rsid','ref':'oa','alt':'ea','pval':'p','sebeta':'se','af_alt':'eaf'},'gzip','logOR',nfix=None)
 grab(f"{G}/PGC_MDD.gz","O3_PGC_MDD",
      {'SNP':'rsid','A1':'ea','A2':'oa','SE':'se','P':'p','Neff':'n','FRQ_U_113154':'eaf'},'gzip','logOR',

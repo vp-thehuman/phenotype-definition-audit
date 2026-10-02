@@ -12,7 +12,7 @@ ROOT=os.environ.get("ROOT","/tmp")
 import pandas as pd, numpy as np, itertools, json
 D=f"{ROOT}/mr/data"
 EXPS=["E1_EAGLE_criteria","E2_UKB_selfreport","E3_UKB_ICD","E4_allergic_broad","E5_BUDU_meta"]
-LAB={"E1_EAGLE_criteria":"Clinician criteria (EAGLE)","E2_UKB_selfreport":"Self-report (UKB)",
+LAB={"E1_EAGLE_criteria":"Clinician criteria (EAGLE)","E2_UKB_selfreport":"UKB hayfever/rhinitis/eczema",
      "E3_UKB_ICD":"Hospital ICD (UKB)","E4_allergic_broad":"Broad allergic composite",
      "E5_BUDU_meta":"Pooled meta-analysis"}
 comp={'A':'T','T':'A','C':'G','G':'C'}
@@ -60,12 +60,11 @@ json.dump(scales,open(f"{ROOT}/mr/out/scale_factors.json","w"),indent=2)
 # fraction of each linear-model file. Compare with what the file is supposed to be.
 # (v0.2) For E2 this gives about 22%; UK Biobank self-reported eczema/dermatitis
 # (20002_1452) is 2.6%, while 'hayfever, allergic rhinitis or eczema' (6152_9) is 23%.
-EXPECTED={"E2_UKB_selfreport":"self-reported eczema; 20002_1452 is 2.6% in UK Biobank",
+EXPECTED={"E2_UKB_selfreport":"UKB 6152_9 hayfever/rhinitis/eczema is 23% (self-reported eczema 20002_1452 is 2.6%)",
           "E3_UKB_ICD":"12,176 / 484,598 = 2.5%"}
 for e,v in scales.items():
     mu=(1-np.sqrt(max(1-4*v,0)))/2
     print(f"scale audit {LAB[e]:28s} mu(1-mu)={v:.4f} -> implied case fraction {mu:.1%}"
           f"   expected: {EXPECTED.get(e,'?')}")
-    if e=="E2_UKB_selfreport" and mu>0.10:
-        print("  WARNING: implied case fraction is far above self-reported eczema prevalence; "
-              "check whether this file is a combined allergy/eczema phenotype (see CHANGELOG).")
+    # v0.3: confirmed. rg(E2, UKB 6152_9 hayfever/rhinitis/eczema) = 0.98 (SE 0.04); rg(E2, 20002_1452
+    # self-reported eczema) = 0.47 (SE 0.08). E2 is the touchscreen composite, labelled accordingly.

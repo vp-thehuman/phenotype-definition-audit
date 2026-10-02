@@ -4,7 +4,7 @@ A screen for phenotype-definition contamination in GWAS used as Mendelian random
 
 Vishnupriya Kannan and Marie Loh, Lee Kong Chian School of Medicine, Nanyang Technological University, Singapore.
 
-> Status: research code for work under preparation (Genome Informatics 2026 abstract). Version 0.3 corrects the jackknife blocks, the negative-control rule, the LD score regression weights and the multivariable MR, and runs the UK Biobank scan from a clean clone. The UK Biobank scan outputs in `results/` (Table8, Table8b, Table9, Table10, Fig6, `ukb_h2.json`) were regenerated with v0.3 on 2 October 2026; the AD and depression family tables (Tables 1–7, Figs 1–5) are still v0.1. See [CHANGELOG.md](CHANGELOG.md).
+> Status: research code for work under preparation (Genome Informatics 2026 abstract). Version 0.4 (2 October 2026): every table and figure in `results/` was regenerated from public data with the corrected code (contiguous jackknife blocks, reference-LDSC weights, a-priori negative controls, re-clumped MVMR with Sanderson–Windmeijer conditional F). See [CHANGELOG.md](CHANGELOG.md).
 
 ## The problem
 
@@ -28,30 +28,32 @@ Four steps, in increasing cost.
 
 ## Worked example: atopic dermatitis
 
-Five European AD definitions, seven outcomes, all public data.
+Five European AD definitions, seven outcomes, all public data (sources in `code/01_harmonise.py`, `03`, `14`).
 
-| Definition | lambda | excess rg | MVMR conditional OR (asthma) | Verdict |
-|---|---|---|---|---|
-| Clinician criteria (EAGLE) | 1.00 | 0.00 | reference | clean |
-| Hospital ICD (UK Biobank) | 0.96 | −0.04 | 1.03 (0.88–1.21), p = 0.69 | clean, fully absorbed |
-| Pooled meta-analysis (2023) | 0.69 | −0.07 | 1.28 (1.02–1.61), p = 0.032 | partly contaminated |
-| Self-report (UK Biobank)¹ | 0.29 | +0.38 | 1.57 (1.44–1.71), p = 1e-24 | contaminated |
-| Broad allergic composite | 0.28 | +0.28 | 2.03 (1.79–2.31), p = 3e-28 | heavily contaminated |
+| Definition | lambda | excess rg | MVMR conditional OR (asthma) | conditional F | Verdict |
+|---|---|---|---|---|---|
+| Clinician criteria (EAGLE) | 1.00 | 0.00 | reference | — | reference |
+| Hospital ICD (UK Biobank) | 0.96 | +0.08 | 1.00 (0.86–1.16), p = 0.99 | 4.4 | fully absorbed |
+| Pooled meta-analysis (2023) | 0.69 | +0.04 | 1.32 (1.00–1.73), p = 0.046 | 1.0 | not identifiable (weak) |
+| Hay fever, rhinitis or eczema (UK Biobank)¹ | 0.29 | +0.49 | 1.60 (1.46–1.75), p = 1e-23 | 13.1 | contaminated |
+| Broad allergic composite | 0.28 | +0.49 | 2.06 (1.79–2.37), p = 2e-23 | 5.3 | contaminated |
 
-¹ Under verification. The linear-to-log-odds scale factor for this file (GCST90029017, Loh 2018) implies a case fraction of about 22%. UK Biobank self-reported eczema/dermatitis (20002_1452) is 2.6%; the touchscreen item *hayfever, allergic rhinitis or eczema* (6152_9) is 23%. If the file is the combined allergy/eczema phenotype, this arm contains rhinitis cases by construction and should be relabelled. `06_concordance.py` now prints this audit for every linear-model file.
+The screen ranks the definitions as MVMR does except for the pooled meta-analysis, whose conditional estimate is not identifiable (conditional F 1.0): Pearson r = 0.84 between excess and log MVMR OR, Spearman 0.6, k = 4, descriptive. Outcome triage: genetic correlation of each outcome with allergic rhinitis predicts its between-definition spread (r = 0.90, k = 7).
+
+¹ GCST90029017 (Loh 2018) is catalogued as "eczema" and was labelled self-reported eczema in v0.1. It is the UK Biobank touchscreen item *hayfever, allergic rhinitis or eczema*: its implied case fraction is 22% (the item's prevalence is 23%; self-reported eczema/dermatitis, 20002_1452, is 2.6%), and its genetic correlation is 0.98 (SE 0.04) with that item and 0.47 (SE 0.08) with self-reported eczema. It contains rhinitis cases by construction.
 
 ## Worked example: depression
 
-The Glanville 2021 UK Biobank ladder; reference CIDI lifetime depression, contaminant neuroticism. Instrument counts collapse for the strict arms, so MR is not possible, but the index still runs.
+The Glanville 2021 UK Biobank ladder; reference CIDI lifetime depression, contaminant neuroticism. Instrument counts collapse for the strict arms (1–8 clumped instruments), so MR is not possible, but the index still runs. rg(CIDI, neuroticism) = 0.46 (SE 0.04).
 
-| Definition | rg vs reference | rg vs contaminant | excess |
+| Definition | rg vs reference | rg vs contaminant | excess (SE) |
 |---|---|---|---|
-| 1 endorsed measure | 0.606 | 0.656 | 0.359 |
-| 2 endorsed measures | 0.577 | 0.714 | 0.431 |
-| 3 endorsed measures | 0.744 | 0.614 | 0.250 |
-| 4–5 endorsed measures | 0.521 | 0.849 | 0.594 |
+| 1 endorsed measure | 0.66 | 0.72 | 0.42 (0.05) |
+| 2 endorsed measures | 0.70 | 0.68 | 0.36 (0.05) |
+| 3 endorsed measures | 0.55 | 0.61 | 0.35 (0.05) |
+| 4–5 endorsed measures | 0.49 | 0.64 | 0.42 (0.06) |
 
-Contamination can belong to the measurement instrument rather than to the breadth of the definition: raising the threshold on a neuroticism-loaded questionnaire concentrates it instead of removing it.
+Every touchscreen definition is contaminated relative to the interview reference, and the excess does not fall as the threshold rises: contamination belongs to the measurement instrument, not to the breadth of the definition. (v0.1 reported the strictest arm as the most contaminated, 0.59; with corrected standard errors and weights the four arms are indistinguishable.)
 
 ## Systematic scan: UK Biobank
 
@@ -107,10 +109,9 @@ About two hours on two cores / 8 GB RAM, mostly download (1000 Genomes ~15 GB; 1
 
 ## Known gaps
 
-- **Results not regenerated.** Everything in `results/` comes from v0.1. Re-running with v0.2 will change standard errors (contiguous blocks), the negative-control set (five a-priori pairs; touchscreen versus self-reported hypertension becomes an informative comparison), Table7 standard errors, and the MVMR instrument sets and conditional F. Point estimates of rg and of the index are unchanged by the block fix.
-- **The 'self-report' AD arm** needs its phenotype definition confirmed (footnote ¹ above).
-- **AD and depression families (scripts 00–21) need inputs you supply:** the GWAS files in `$ROOT/gwas` (sources in the pre-registration) and a 1000 Genomes EUR PLINK set at `$ROOT/ld/EUR` for clumping and for `10_ldscores.sh`. `10_ldscores.sh` is the fixed-count LD build used for those families; the UK Biobank scan uses the fixed-fraction build from `22b`.
-- **LD score regression weights.** The scan engine (`ldsc3.py`) uses reference-LDSC weights: 1/max(LD score, 1) times the inverse expected variance of each statistic from a first-pass estimate. There is no two-step estimator or intercept constraint. `13_ldsc.py` and `19_family_index.py` (AD and depression families) still use 1/max(LD score, 1) only and have not been re-run. v0.3 validation on the UK Biobank build: self-reported asthma with hayfever 0.52, self-reported depression with neuroticism 0.71.
+- **One reference panel.** LD scores and clumping use 1000 Genomes EUR (503 people); all GWAS here are European-ancestry.
+- **AD and depression families (scripts 00–21)** read GWAS files from `$ROOT/gwas` under the names used in the scripts (GWAS Catalog GCST003184, GCST90029017, GCST90038680, GCST005038, GCST90244787, GCST005839, GCST90014426/28/30/32/34, GCST90029028; FinnGen R11 F5_DEPRESSIO, F5_ALLANXIOUS, J10_ASTHMA_EXMORE, ALLERG_RHINITIS, J10_COPD, K11_IBD_STRICT, G6_MIGRAINE). `00a_eur_reference.sh` builds the 1000 Genomes EUR PLINK reference used for clumping. The LD scores are the same fixed-fraction build as the scan; the v0.1 fixed-count build is kept as `10_ldscores_fixedcount_v01.sh`.
+- **LD score regression weights.** All LD score regression (`ldsc3.py`, `13_ldsc.py`, `19_family_index.py`, `20_dep_se.py`) uses reference-LDSC weights: 1/max(LD score, 1) times the inverse expected variance of each statistic from a first-pass estimate. There is no two-step estimator or intercept constraint. v0.3 validation on the UK Biobank build: self-reported asthma with hayfever 0.52, self-reported depression with neuroticism 0.71.
 - **Most UK Biobank arms are weakly heritable on this scale.** With honest standard errors only 7 of 34 families pass z ≥ 6. A denser LD-score SNP set (the thinned set is 6.5% of common SNPs) would increase power.
 
 ## Citation

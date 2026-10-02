@@ -49,7 +49,7 @@ for k in FAMILY:
     if os.path.exists(f"{C}/{k}.clumps"): print("clumped",k,flush=True); continue
     d=pd.read_parquet(f"{D}/{k}.parquet")
     d[['rsid','p']].rename(columns={'rsid':'ID','p':'P'}).to_csv(f"{C}/{k}.assoc",sep="\t",index=False)
-    subprocess.run([f"{ROOT}/plink2","--bfile",f"{ROOT}/ld/EUR","--clump",f"{C}/{k}.assoc",
+    subprocess.run([os.environ.get("PLINK2") or __import__("shutil").which("plink2") or f"{ROOT}/plink2","--bfile",f"{ROOT}/ld/EUR","--clump",f"{C}/{k}.assoc",
         "--clump-p1","5e-8","--clump-r2","0.001","--clump-kb","10000",
         "--clump-id-field","ID","--clump-p-field","P","--out",f"{C}/{k}","--silent"],
         capture_output=True)

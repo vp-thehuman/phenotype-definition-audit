@@ -31,20 +31,23 @@ def jk(f,n,blocks=200,seed=0):
     return full,np.sqrt((blocks-1)/blocks*np.sum((e-e.mean())**2))
 def h2(d):
     n=float(d.n_eff.iloc[0]); l=d.L2.values; chi=d.z.values**2; w=1/np.maximum(l,1)
+    h0=float(np.clip(wls(l*n/M,chi,w)[1],0,1)); w=w/(2*(1+n*h0*l/M)**2)   # LDSC weights (v0.3)
     return jk(lambda ix: wls(l[ix]*n/M,chi[ix],w[ix])[1], len(d))
-def rg(a,b):
+def rg(a,b,an=None,bn=None):
     m=a.merge(b,on='rsid',suffixes=('_1','_2'))
     m=m.sort_values([k+'_1' for k in SORTK if k!='rsid'] or ['rsid']).reset_index(drop=True)
     s=np.where(m.ea_1==m.ea_2,1,np.where(m.ea_1==m.ea_2.map(comp),1,
       np.where(m.ea_1==m.oa_2,-1,np.where(m.ea_1==m.oa_2.map(comp),-1,0))))
     m=m[s!=0].copy(); zz=m.z_1.values*(m.z_2.values*s[s!=0])
     n1=float(m.n_eff_1.iloc[0]); n2=float(m.n_eff_2.iloc[0]); l=m.L2_1.values; w=1/np.maximum(l,1)
+    ha=float(np.clip(H0.get(an,0),0,1)); hb=float(np.clip(H0.get(bn,0),0,1)); r0=wls(l*np.sqrt(n1*n2)/M,zz,w)[1]
+    w=w/((1+n1*ha*l/M)*(1+n2*hb*l/M)+(np.sqrt(n1*n2)*r0*l/M)**2)              # LDSC weights (v0.3)
     return jk(lambda ix: wls(l[ix]*np.sqrt(n1*n2)/M,zz[ix],w[ix])[1], len(m))
 dat={n:load(n) for n in NAMES}
-H={n:h2(dat[n])[0] for n in NAMES}
+H={n:h2(dat[n])[0] for n in NAMES}; H0=H
 def RG(a,b):
     if a==b: return 1.0
-    r,_=rg(dat[a],dat[b]); return float(np.clip(r/np.sqrt(max(H[a],1e-9)*max(H[b],1e-9)),-1,1))
+    r,_=rg(dat[a],dat[b],a,b); return float(np.clip(r/np.sqrt(max(H[a],1e-9)*max(H[b],1e-9)),-1,1))
 REF="DEP_cidi"; CON="CON_neuroticism"
 rows=[]
 for n in ["DEP_1sym","DEP_2sym","DEP_3sym","DEP_45sym","DEP_cidi"]:
