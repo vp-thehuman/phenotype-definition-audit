@@ -42,11 +42,13 @@ def jackknife(f,n,blocks=200,seed=0):
 def h2(d):
     n=float(d.n_eff.iloc[0]); l=d.L2.values; chi=d.z.values**2
     w=1/np.maximum(l,1)
+    # reference-LDSC heteroskedasticity weights from a first-pass estimate (v0.3)
+    h0=float(np.clip(wls(l*n/M,chi,w)[0][1],0,1)); w=w/(2*(1+n*h0*l/M)**2)
     def est(ix):
         b,_=wls(l[ix]*n/M,chi[ix],w[ix]); return b[1]
     return jackknife(est,len(d))
 
-def rg_pair(a,b):
+def rg_pair(a,b,a_name,b_name):
     m=a.merge(b,on='rsid',suffixes=('_1','_2'))
     m=m.sort_values([k+'_1' for k in SORTK if k!='rsid'] or ['rsid']).reset_index(drop=True)
     sign=np.where(m.ea_1==m.ea_2,1,np.where(m.ea_1==m.ea_2.map(comp),1,
@@ -54,6 +56,9 @@ def rg_pair(a,b):
     m=m[sign!=0].copy(); m['z2a']=m.z_2.values*sign[sign!=0]
     n1=float(m.n_eff_1.iloc[0]); n2=float(m.n_eff_2.iloc[0])
     l=m.L2_1.values; zz=m.z_1.values*m.z2a.values; w=1/np.maximum(l,1)
+    x=l*np.sqrt(n1*n2)/M; r0=wls(x,zz,w)[0][1]
+    h1=float(np.clip(H0[a_name],0,1)); h2_=float(np.clip(H0[b_name],0,1))
+    w=w/((1+n1*h1*l/M)*(1+n2*h2_*l/M)+(np.sqrt(n1*n2)*r0*l/M)**2)
     def est(ix):
         bb,_=wls(l[ix]*np.sqrt(n1*n2)/M,zz[ix],w[ix]); return bb[1]
     rho,rho_se=jackknife(est,len(m))
@@ -62,14 +67,14 @@ def rg_pair(a,b):
 names=[f[:-8] for f in sorted(os.listdir(D)) if f.endswith(".parquet")]
 print("traits:",names,flush=True)
 dat={n:load(n) for n in names}
-H={}
+H={}; H0={}
 for n in names:
-    v,se=h2(dat[n]); H[n]=v
+    v,se=h2(dat[n]); H[n]=v; H0[n]=v
     print(f"h2* {n:20s} {v: .4f} (se {se:.4f})  [thinned-LD scale, not interpretable as h2]",flush=True)
 
 rows=[]
 for a,b in itertools.combinations(names,2):
-    rho,rse,k=rg_pair(dat[a],dat[b])
+    rho,rse,k=rg_pair(dat[a],dat[b],a,b)
     den=np.sqrt(max(H[a],1e-9)*max(H[b],1e-9))
     rg=rho/den; rgse=rse/den
     rows.append(dict(trait1=a,trait2=b,n_snp=k,rg=float(np.clip(rg,-1.5,1.5)),rg_se=float(rgse),

@@ -9,7 +9,7 @@ import pandas as pd, numpy as np, json, os
 from scipy import stats
 D=f"{ROOT}/mr/data"; OUT=f"{ROOT}/mr/out"
 MAF_MIN=0.01
-EXPS={"E1_EAGLE_criteria":"Clinician criteria (EAGLE)","E2_UKB_selfreport":"Self-report (UK Biobank)",
+EXPS={"E1_EAGLE_criteria":"Clinician criteria (EAGLE)","E2_UKB_selfreport":"UKB hayfever/rhinitis/eczema",
       "E3_UKB_ICD":"Hospital ICD record (UK Biobank)","E4_allergic_broad":"Broad allergic composite",
       "E5_BUDU_meta":"Pooled meta-analysis (2023)"}
 OUTC={"O1_FG_depression":"Depression (FinnGen R11)","O2_FG_anxiety":"Anxiety (FinnGen R11)",

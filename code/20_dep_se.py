@@ -13,12 +13,13 @@ dat={n:load(n) for n in NAMES}
 H={}; HS={}
 for n in NAMES:
     v,s=h2(dat[n]); H[n]=v; HS[n]=s
+H0=H
 def RGse(a,b):
-    r,rs=rg(dat[a],dat[b]); den=np.sqrt(max(H[a],1e-9)*max(H[b],1e-9))
+    r,rs=rg(dat[a],dat[b],a,b); den=np.sqrt(max(H[a],1e-9)*max(H[b],1e-9))
     return float(np.clip(r/den,-1,1)), float(rs/den)
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from ldsc3 import contiguous_blocks, block_sums, full_and_loo, jk_se
+from ldsc3 import contiguous_blocks, block_sums, full_and_loo, jk_se, slope
 
 def excess_exact(Dn, Rn, Cn, clip=1.0):
     """Exact jackknife SE of rg(D,C) - rg(D,R) rg(R,C) on the common SNP set."""
@@ -34,9 +35,13 @@ def excess_exact(Dn, Rn, Cn, clip=1.0):
     l=m.L2.values; w=1/np.maximum(l,1); lab=contiguous_blocks(len(m))
     Z={'D':m.z.values,'R':m.z_R.values,'C':m.z_C.values}
     N={'D':float(m.n_eff.iloc[0]),'R':float(m.n_eff_R.iloc[0]),'C':float(m.n_eff_C.iloc[0])}
-    h={k:full_and_loo(block_sums(l*N[k]/M,Z[k]**2,w,lab)) for k in Z}
+    first=lambda x,y: slope(block_sums(x,y,w,np.zeros(len(x),dtype=np.int32),1).sum(axis=1))
+    h0={k:float(np.clip(first(l*N[k]/M,Z[k]**2),0,1)) for k in Z}          # LDSC weights (v0.3)
+    h={k:full_and_loo(block_sums(l*N[k]/M,Z[k]**2,w/(2*(1+N[k]*h0[k]*l/M)**2),lab)) for k in Z}
     def g(a,b):
-        rf,rl=full_and_loo(block_sums(l*np.sqrt(N[a]*N[b])/M,Z[a]*Z[b],w,lab))
+        x=l*np.sqrt(N[a]*N[b])/M; r0=first(x,Z[a]*Z[b])
+        wab=w/((1+N[a]*h0[a]*l/M)*(1+N[b]*h0[b]*l/M)+(np.sqrt(N[a]*N[b])*r0*l/M)**2)
+        rf,rl=full_and_loo(block_sums(x,Z[a]*Z[b],wab,lab))
         return (np.clip(rf/np.sqrt(abs(h[a][0]*h[b][0])),-clip,clip),
                 np.clip(rl/np.sqrt(np.abs(h[a][1]*h[b][1])),-clip,clip))
     dc,dr,rcx=g('D','C'),g('D','R'),g('R','C')

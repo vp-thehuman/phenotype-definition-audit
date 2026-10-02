@@ -40,7 +40,7 @@ def sw_condF(bj,sj,bk,sk):
     return float(Q/max(len(bj)-1,1))
 D=f"{ROOT}/mr/data"
 REF="X1_EAGLE"; REFLAB="Clinician criteria (EAGLE)"
-TEST={"X2_UKB_selfreport":"Self-report (UK Biobank)","X3_UKB_ICD":"Hospital ICD (UK Biobank)",
+TEST={"X2_UKB_selfreport":"UKB hayfever/rhinitis/eczema","X3_UKB_ICD":"Hospital ICD (UK Biobank)",
       "X4_allergic_broad":"Broad allergic composite","X5_BUDU":"Pooled meta-analysis"}
 CLUMP={"X1_EAGLE":"E1_EAGLE_criteria","X2_UKB_selfreport":"E2_UKB_selfreport",
        "X3_UKB_ICD":"E3_UKB_ICD","X4_allergic_broad":"E4_allergic_broad","X5_BUDU":"E5_BUDU_meta"}

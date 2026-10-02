@@ -21,7 +21,7 @@ def rg(a,b):
 KEY={'E1_EAGLE_criteria':'AD_criteria','E3_UKB_ICD':'AD_icd','E5_BUDU_meta':'AD_meta',
      'E2_UKB_selfreport':'AD_selfreport','E4_allergic_broad':'AD_allergic_broad'}
 LAB={'E1_EAGLE_criteria':'Clinician criteria','E3_UKB_ICD':'Hospital ICD',
-     'E5_BUDU_meta':'Pooled meta-analysis','E2_UKB_selfreport':'Self-report',
+     'E5_BUDU_meta':'Pooled meta-analysis','E2_UKB_selfreport':'Hay fever/rhinitis/eczema',
      'E4_allergic_broad':'Allergic composite'}
 C='OUT_rhinitis'; REF='AD_criteria'
 idx=[]
@@ -32,7 +32,7 @@ for e,tr in KEY.items():
 ix=pd.DataFrame(idx)
 mv=pd.read_csv(f"{O}/Table3_mvmr.csv"); mv=mv[mv.outcome=="Asthma"]
 mvmap=dict(zip(mv.definition,mv.mvmr_OR_definition))
-NAME={'Self-report':'Self-report (UK Biobank)','Hospital ICD':'Hospital ICD (UK Biobank)',
+NAME={'Hay fever/rhinitis/eczema':'UKB hayfever/rhinitis/eczema','Hospital ICD':'Hospital ICD (UK Biobank)',
       'Allergic composite':'Broad allergic composite','Pooled meta-analysis':'Pooled meta-analysis'}
 ix['mvmr_conditional_OR']=ix.label.map(lambda l: mvmap.get(NAME.get(l,''),np.nan))
 ix.to_csv(f"{O}/Table5_contamination_index.csv",index=False)

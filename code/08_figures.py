@@ -11,10 +11,10 @@ ORDER=["E1_EAGLE_criteria","E3_UKB_ICD","E5_BUDU_meta","E2_UKB_selfreport","E4_a
 LAB={"E1_EAGLE_criteria":"Clinician criteria\nEAGLE, 18,900 cases",
      "E3_UKB_ICD":"Hospital ICD record\nUK Biobank, 12,176 cases",
      "E5_BUDU_meta":"Pooled meta-analysis\n2023, 60,653 cases",
-     "E2_UKB_selfreport":"Self-report\nUK Biobank, n = 461,199",
+     "E2_UKB_selfreport":"Hay fever, rhinitis or eczema\nUK Biobank touchscreen, n = 461,199",
      "E4_allergic_broad":"Broad allergic composite\n180,129 cases"}
 SHORT={"E1_EAGLE_criteria":"Clinician criteria","E3_UKB_ICD":"Hospital ICD","E5_BUDU_meta":"Pooled meta-analysis",
-       "E2_UKB_selfreport":"Self-report","E4_allergic_broad":"Allergic composite"}
+       "E2_UKB_selfreport":"Hay fever/rhinitis/eczema","E4_allergic_broad":"Allergic composite"}
 INK="#1a1a1a"; MUTED="#6b6b6b"; GRID="#e3e3e3"; BLUE="#2f6f8f"; RED="#a8443a"; NULLC="#b0b0b0"
 plt.rcParams.update({"font.family":"DejaVu Sans","font.size":9,"axes.edgecolor":GRID,
                      "axes.linewidth":0.8,"text.color":INK,"xtick.color":MUTED,"ytick.color":INK,"figure.dpi":300})

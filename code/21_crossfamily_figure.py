@@ -19,8 +19,8 @@ xs=np.linspace(0,1.05,50)
 a1.plot(xs,xs*rc_ad,color=MUTED,lw=1.3,ls=(0,(5,3)),zorder=1)
 a1.fill_between(xs,xs*rc_ad,1.05,color=RED,alpha=0.055,zorder=0)
 a1.scatter(ad.rg_vs_criteria,ad.rg_contaminant,s=110,color=RED,edgecolor="white",lw=1.5,zorder=3)
-OFF={"Clinician criteria":(-11,4,"right"),"Hospital ICD":(11,-3,"left"),
-     "Pooled meta-analysis":(-11,-13,"right"),"Self-report":(-10,7,"right"),"Allergic composite":(-10,7,"right")}
+OFF={"Clinician criteria":(-11,-14,"right"),"Hospital ICD":(11,-3,"left"),
+     "Pooled meta-analysis":(-11,6,"right"),"Hay fever/rhinitis/eczema":(8,-12,"left"),"Allergic composite":(-10,7,"right")}
 for _,r in ad.iterrows():
     dx,dy,ha=OFF.get(r.label,(0,12,"center"))
     a1.annotate(r.label,(r.rg_vs_criteria,r.rg_contaminant),textcoords="offset points",

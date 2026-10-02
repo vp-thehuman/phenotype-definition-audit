@@ -1,5 +1,38 @@
 # Changelog
 
+## v0.4 (2 October 2026): AD and depression families re-run
+
+All inputs re-downloaded from the GWAS Catalog and FinnGen R11 and run with the corrected
+code. Tables 1–7, Figs 1–5 and the JSON files in `results/` are regenerated.
+
+### Code
+- `00a_eur_reference.sh` (new): builds the 1000 Genomes EUR PLINK reference used for clumping,
+  named by rsID; resumes and refuses to merge an incomplete set.
+- `03_outcomes.py` now extracts the FinnGen asthma positive control (v0.1 did this outside the
+  repository).
+- `13_ldsc.py`, `19_family_index.py`, `20_dep_se.py`: reference-LDSC weights, as in `ldsc3.py`.
+- `10_ldscores.sh` uses the same fixed-fraction LD build as the scan; v0.1 build kept as
+  `10_ldscores_fixedcount_v01.sh`.
+- `02_clump.sh` and `17_family_runner.py` find plink2 on PATH.
+- E2 relabelled throughout: GCST90029017 is the UK Biobank touchscreen item *hayfever,
+  allergic rhinitis or eczema*, not self-reported eczema (implied case fraction 22% vs 23%;
+  rg 0.98 with that item, 0.47 with self-reported eczema 20002_1452).
+
+### Results that changed
+| Item | v0.1 | v0.4 |
+|---|---|---|
+| MVMR, hospital ICD | 1.03 (0.88–1.21), p = 0.69 | 1.00 (0.86–1.16), p = 0.99 |
+| MVMR, E2 (now hay fever/rhinitis/eczema) | 1.57, p = 1e-24 | 1.60 (1.46–1.75), p = 1e-23 |
+| MVMR, allergic composite | 2.03, p = 3e-28 | 2.06 (1.79–2.37), p = 2e-23 |
+| MVMR, pooled meta-analysis | 1.28 (1.02–1.61), p = 0.032, F 5.6 | 1.32 (1.00–1.73), p = 0.046, conditional F 1.0 |
+| Excess: ICD / meta / E2 / composite | −0.04 / −0.07 / 0.38 / 0.28 | 0.08 / 0.04 / 0.49 / 0.49 |
+| Screen vs MVMR | r = 0.78 | r = 0.84, Spearman 0.6 (k = 4) |
+| Outcome triage | r = 0.86 | r = 0.90 (k = 7) |
+| Asthma heterogeneity (main MR) | I² 93.9% | I² 94%, spread 1.45 |
+| Depression excess, 1 / 2 / 3 / 4–5 measures | 0.36 / 0.43 / 0.25 / 0.59 | 0.42 / 0.36 / 0.35 / 0.42 (SE 0.05–0.06) |
+| Depression: strictest arm most contaminated | yes | no; all four indistinguishable |
+
+
 ## v0.3 (October 2026): UK Biobank scan re-run
 
 ### Fixes found while re-running
