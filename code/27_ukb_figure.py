@@ -19,9 +19,9 @@ ax.text(0.376,len(A)-0.2,' AD self-report (+0.38)',color='#c44e52',fontsize=7.5,
 dup=T[T.duplicate_definition]
 ax.set_xlabel('Excess genetic correlation with worst-case contaminant of the panel\n'
               r'excess = $r_g(D,C)-r_g(D,R)\,r_g(R,C)$',fontsize=9)
-ax.set_title('Phenotype-definition contamination across 27 UK Biobank trait families\n'
+ax.set_title(f'Phenotype-definition contamination across {T.family.nunique()} UK Biobank trait families\n'
              f'one cohort, one array, one control set; {len(A)} definition-vs-reference pairs, '
-             f'{len(dup)} duplicate-definition negative controls returned 0',fontsize=10,loc='left')
+             f'{len(dup)} a-priori negative controls (curated endpoint = same ICD code): max excess {dup.excess_max.abs().max():.3f}',fontsize=10,loc='left')
 used=[t for t in COL if t in set(A.def_type)]
 h=[plt.Rectangle((0,0),1,1,color=COL[t]) for t in used]
 ax.legend(h,used,fontsize=7.5,loc='lower right',title='definition under test',title_fontsize=8)

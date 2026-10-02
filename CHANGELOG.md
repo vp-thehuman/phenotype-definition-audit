@@ -1,5 +1,36 @@
 # Changelog
 
+## v0.3 (October 2026): UK Biobank scan re-run
+
+### Fixes found while re-running
+- **rsIDs for LD scores.** The 1000 Genomes phase 3 v5b VCFs have '.' in the ID column, so
+  every variant shared one name and LD scores were meaningless. 22b now names variants
+  chr:pos:ref:alt and 22c maps them to rsIDs with the new `22d_variant_ids.py` (Neale
+  variants manifest, GRCh37).
+- **LD score regression weights.** `ldsc3.py` now uses reference-LDSC heteroskedasticity
+  weights (inverse expected variance from a first-pass estimate) in addition to
+  1/max(LD score, 1). With contiguous jackknife blocks the unweighted estimator had
+  standard errors several times larger than necessary.
+- Fig6 title now reports the computed family count and control maximum.
+
+### Results (Table8, Table8b, Table9, Table10, Fig6, ukb_h2.json regenerated)
+- LD build: 383,878 SNPs; mean LD score 7.0–15.6 by chromosome. 100 GWAS streamed.
+- Validation: self-reported asthma–hayfever rg 0.52 (v0.1: 0.38); self-reported
+  depression–neuroticism 0.71 (v0.1: 0.74).
+- Heritability standard errors are roughly 3–10 times larger than v0.1 (e.g. BMI z 19.8
+  against 90.8). v0.1's shuffled blocks understated them.
+- Pre-specified filter h2 z ≥ 6: 7 families (v0.1: 29), 12 comparisons, 2 negative
+  controls (max excess 0.004), 10 informative; 3 with excess > 0.1, 1 > 0.2, 4 beyond
+  2 SE (v0.1: 19, 11 and 34 of 35). Median excess: self-report 0.26 (2 comparisons),
+  curated 0.05 (6). All three comparisons above 0.1 have a reporting or hospitalisation
+  trait as worst contaminant.
+- Sensitivity h2 z ≥ 4 (Table8b): 19 families, 26 informative; 11 > 0.1, 3 > 0.2,
+  10 beyond 2 SE; median self-report 0.14 vs curated 0.07; healthcare-contact or
+  reporting trait worst in 8 of 11.
+- Tables 1–7 and Figs 1–5 (AD and depression families) were not re-run: their input
+  GWAS are not distributed with the repository.
+
+
 ## v0.2 (branch `review-fixes`, October 2026)
 
 Code changes only. **`results/` still holds v0.1 output** and must be regenerated

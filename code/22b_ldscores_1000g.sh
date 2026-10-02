@@ -4,11 +4,12 @@
 ROOT=${ROOT:-/tmp}; export ROOT
 HERE=$(cd "$(dirname "$0")" && pwd)
 PLINK2=${PLINK2:-$(command -v plink2 || echo ${ROOT}/bin/plink2)}
+python3 "$HERE/22d_variant_ids.py"          # chr:pos:ref:alt -> rsID (VCFs carry no rsIDs)
 cd ${ROOT}/ld
 mkdir -p out2
 proc(){ c=$1
   $PLINK2 --vcf chr$c.vcf.gz --keep eur.id --snps-only --max-alleles 2 --maf 0.05 \
-    --rm-dup exclude-all --memory 2500 --make-bed --out f$c --silent || return 1
+    --set-all-var-ids '@:#:$r:$a' --new-id-max-allele-len 100 --rm-dup exclude-all --memory 2500 --make-bed --out f$c --silent || return 1
   rm -f chr$c.vcf.gz
   $PLINK2 --bfile f$c --thin 0.065 --seed 42 --memory 2500 --make-bed --out c$c --silent || return 1
   rm -f f$c.bed f$c.bim f$c.fam f$c.log

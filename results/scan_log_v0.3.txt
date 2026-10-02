@@ -1,0 +1,135 @@
+EUR samples: 503
+xargs: warning: options --max-args and --replace/-I/-i are mutually exclusive, ignoring previous --max-args value
+chr2: 31,614 SNPs, mean L2 9.40, pairs 4,610,637
+LD scores: 383878 SNPs; mean L2 by chromosome 7.0 to 15.6
+whitelist: 383,878 variants of 383,878 LD-score SNPs
+189_irnt                   snps=383,874 neff=     365,019
+20002_1065                 snps=383,874 neff=   1,987,369
+20002_1074                 snps=383,872 neff=  12,110,174
+135                        snps=175,922 neff=     562,632
+137                        snps=175,922 neff=     601,945
+20002_1094                 snps=383,855 neff=  18,359,220
+20002_1111                 snps=383,874 neff=   3,510,626
+20002_1075                 snps=383,865 neff=  16,546,142
+20002_1113                 snps=383,839 neff=  26,266,122
+20002_1081                 snps=383,838 neff=  27,363,314
+20002_1197                 snps=383,830 neff=  45,806,849
+20002_1265                 snps=383,872 neff=  12,673,648
+20002_1138                 snps=383,874 neff=   8,940,076
+20002_1278                 snps=383,839 neff=  26,316,607
+20002_1162                 snps=383,843 neff=  22,357,141
+20002_1387                 snps=383,874 neff=   6,690,051
+20002_1286                 snps=383,874 neff=   6,705,185
+20002_1398                 snps=383,839 neff=  25,440,688
+20002_1412                 snps=383,829 neff=  48,802,507
+20002_1294                 snps=383,846 neff=  20,850,793
+20002_1471                 snps=383,830 neff=  46,527,694
+20002_1458                 snps=383,836 neff=  31,995,940
+20002_1502                 snps=383,831 neff=  42,857,804
+20116_2                    snps=383,874 neff=   3,916,628
+20002_1465                 snps=383,874 neff=   4,858,292
+2178                       snps=383,874 neff=     683,977
+20127_irnt                 snps=383,875 neff=     301,603
+21001_irnt                 snps=383,874 neff=     367,022
+22127                      snps=383,874 neff=     822,309
+2090                       snps=383,874 neff=   1,628,615
+6152_9                     snps=383,874 neff=   2,047,019
+6138_1                     snps=383,874 neff=   1,670,746
+6152_8                     snps=383,874 neff=   3,521,932
+BRONCHITIS                 snps=383,836 neff=  30,731,024
+6150_4                     snps=383,874 neff=   1,926,435
+C3_OTHER_SKIN              snps=383,874 neff=   9,531,093
+C18                        snps=383,827 neff=  52,447,733
+C3_COLON                   snps=383,827 neff=  53,812,019
+C3_PROSTATE                snps=383,846 neff=  21,875,606
+C3_BREAST_3                snps=383,869 neff=  14,124,376
+CARDIAC_ARRHYTM            snps=383,867 neff=  15,292,912
+C44                        snps=383,869 neff=  14,096,327
+C61                        snps=383,838 neff=  29,663,946
+COLITNONINFNAS             snps=383,868 neff=  14,904,074
+C50                        snps=383,866 neff=  15,731,571
+D50                        snps=383,833 neff=  34,697,458
+C_STROKE                   snps=383,844 neff=  21,662,329
+D3_ANAEMIA_IRONDEF         snps=383,833 neff=  34,697,458
+D64                        snps=383,836 neff=  30,653,493
+D3_OTHERANAEMIA            snps=383,836 neff=  30,653,493
+H02                        snps=383,838 neff=  29,120,674
+G56                        snps=383,867 neff=  15,272,259
+G47                        snps=383,831 neff=  44,587,760
+H25                        snps=383,850 neff=  19,728,839
+G6_CARPTU                  snps=383,863 neff=  16,716,258
+H33                        snps=383,830 neff=  48,042,874
+H7_LENS                    snps=383,874 neff=   8,273,506
+H26                        snps=383,874 neff=  11,485,403
+H7_RETINALDETACH           snps=383,831 neff=  43,123,084
+H7_EYELIDDIS               snps=383,838 neff=  29,107,988
+I21                        snps=383,846 neff=  20,902,901
+I48                        snps=383,849 neff=  19,856,473
+I20                        snps=383,851 neff=  18,914,834
+I63                        snps=383,828 neff=  50,828,954
+I25                        snps=383,874 neff=  10,290,513
+I9_CHD                     snps=383,870 neff=  13,427,943
+I9_DVTANDPULM              snps=383,836 neff=  30,493,060
+I80                        snps=383,827 neff=  52,173,842
+I9_IHD                     snps=383,874 neff=   6,898,171
+I9_CORATHER                snps=383,874 neff=   9,793,483
+I9_STR                     snps=383,833 neff=  34,458,419
+I9_VTE                     snps=383,838 neff=  28,533,639
+I9_MI                      snps=383,851 neff=  19,168,361
+ICDMAIN_ANY_ENTRY          snps=383,874 neff=   2,155,426
+I9_UAP                     snps=383,832 neff=  38,321,551
+K11_APPENDIX               snps=383,831 neff=  44,352,826
+K11_HERNIA                 snps=383,874 neff=   5,495,550
+J18                        snps=383,840 neff=  24,642,364
+K20                        snps=383,839 neff=  25,759,741
+K11_GALLBILPANC            snps=383,874 neff=   9,756,583
+K35                        snps=383,827 neff=  53,184,859
+K51                        snps=383,826 neff=  58,398,517
+K21                        snps=383,872 neff=  11,848,472
+K57                        snps=383,874 neff=  10,258,195
+K40                        snps=383,874 neff=  10,591,200
+M13_ARTHROSIS              snps=383,874 neff=   5,710,856
+KNEE_ARTHROSIS             snps=383,874 neff=  11,407,269
+K80                        snps=383,872 neff=  12,316,096
+M13_DORSALGIA              snps=383,867 neff=  15,137,739
+KRA_PSY_ANYMENTAL          snps=383,836 neff=  30,560,209
+M54                        snps=383,867 neff=  15,137,739
+M16                        snps=383,868 neff=  14,335,409
+M13_SHOULDER               snps=383,855 neff=  18,315,165
+M75                        snps=383,855 neff=  18,312,688
+M17                        snps=383,874 neff=  11,407,269
+SLEEP                      snps=383,831 neff=  44,497,855
+SHARD 3 DONE
+N20                        snps=383,833 neff=  36,516,548
+SHARD 0 DONE
+PNEUMONIA                  snps=383,843 neff=  22,452,605
+SHARD 1 DONE
+XXI_HEALTHFACTORS          snps=383,874 neff=   3,253,472
+SHARD 4 DONE
+R51                        snps=383,837 neff=  29,838,071
+SHARD 2 DONE
+rg asthma SR vs hayfever SR              0.377  (se 0.094, k=383,874)
+rg depression SR vs neuroticism          0.741  (se 0.046, k=383,874)
+rg asthma SR vs touchscreen asthma       1.000  (se 0.000, k=383,874)
+rg BMI vs overall health rating          0.522  (se 0.032, k=383,874)
+rg hypertension SR vs touchscreen HBP    0.999  (se 0.001, k=383,874)
+loaded 100 missing []
+h2 done
+pairs: 1117
+  0/1117
+  200/1117
+  400/1117
+  600/1117
+  800/1117
+  1000/1117
+RGDONE 1117
+                                      analysis  families  comparisons  negative_controls  informative  n_excess_gt_0_1  n_excess_gt_0_2  n_excess_gt_AD  n_excess_z_gt_2  median_excess_selfreport  median_excess_curated  median_rg_def_ref  n_rg_below_0_8  min_rg_def_ref  max_control_excess  max_abs_control_excess
+main: h2 z>=6, clinical reference, winsor 1.25         2            4                  0            4                1                0               0                2                       NaN                  0.076              0.995               0           0.983                 NaN                     NaN
+                                       h2 z>=4        13           20                  2           18               10                6               1               10                      0.25                  0.076              0.974               1           0.500                 0.0                     0.0
+                                       h2 z>=8         1            1                  0            1                0                0               0                0                       NaN                    NaN              0.999               0           0.999                 NaN                     NaN
+                                no winsorising         2            4                  0            4                1                0               0                2                       NaN                  0.076              0.995               0           0.983                 NaN                     NaN
+                  reference = curated endpoint         1            3                  0            3                0                0               0                0                       NaN                  0.054              0.992               0           0.991                 NaN                     NaN
+                       reference = largest arm         2            4                  0            4                0                0               0                0                      0.01                  0.054              0.994               0           0.991                 NaN                     NaN
+                         case prevalence >= 1%         2            4                  0            4                1                0               0                2                       NaN                  0.076              0.995               0           0.983                 NaN                     NaN
+ok 4 0
+ALLDONE

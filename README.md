@@ -4,7 +4,7 @@ A screen for phenotype-definition contamination in GWAS used as Mendelian random
 
 Vishnupriya Kannan and Marie Loh, Lee Kong Chian School of Medicine, Nanyang Technological University, Singapore.
 
-> Status: research code for work under preparation (Genome Informatics 2026 abstract). Version 0.2 corrects the jackknife blocks, the negative-control rule and the multivariable MR, and makes the UK Biobank scan run from a clean clone. **The tables and figures in `results/` were produced by v0.1 and have not yet been regenerated**; see [CHANGELOG.md](CHANGELOG.md) and [Known gaps](#known-gaps).
+> Status: research code for work under preparation (Genome Informatics 2026 abstract). Version 0.3 corrects the jackknife blocks, the negative-control rule, the LD score regression weights and the multivariable MR, and runs the UK Biobank scan from a clean clone. The UK Biobank scan outputs in `results/` (Table8, Table8b, Table9, Table10, Fig6, `ukb_h2.json`) were regenerated with v0.3 on 2 October 2026; the AD and depression family tables (Tables 1–7, Figs 1–5) are still v0.1. See [CHANGELOG.md](CHANGELOG.md).
 
 ## The problem
 
@@ -55,7 +55,11 @@ Contamination can belong to the measurement instrument rather than to the breadt
 
 ## Systematic scan: UK Biobank
 
-29 trait families from the Neale lab round-2 GWAS, 35 definition comparisons, 11 candidate contaminants, definition varying within one cohort and array. Negative controls (a curated endpoint that is the same ICD-10 code as the hospital arm) are fixed in advance in `23_ukb_families.py` and reported whatever their excess. Outputs: `results/Table8_ukb_definition_scan.csv`, `results/Table10_sensitivity.csv`, `results/Fig6_ukb_definition_scan.png`.
+34 candidate trait families (89 arms, ≥ 2,000 cases each) from the Neale lab round-2 GWAS and 11 candidate contaminants, with definition varying within one cohort, array and control set. Negative controls (a curated endpoint that is the same ICD-10 code as the hospital arm) are fixed in advance in `23_ukb_families.py` and reported whatever their excess.
+
+Results (v0.3). With the pre-specified heritability filter (SNP-heritability z ≥ 6), 7 families give 12 comparisons: 2 negative controls (excess 0.004 and 0.002) and 10 informative comparisons, of which 3 carry excess above 0.1 and 4 are more than two standard errors from zero. The three above 0.1 are self-reported osteoarthritis (0.38, SE 0.07), self-reported myocardial infarction (0.14, SE 0.07) and a curated osteoarthritis endpoint (0.13, SE 0.05), and in all three the worst contaminant is illness-reporting or hospitalisation propensity. Median excess is 0.26 for self-report against 0.05 for curated endpoints. Relaxing the filter to z ≥ 4 (Table8b) gives 19 families and 26 informative comparisons: 11 above 0.1, 3 above 0.2, 10 beyond two standard errors, median excess 0.14 for self-report against 0.07 for curated endpoints, and a healthcare-contact or reporting trait as the worst contaminant in 8 of the 11. Outputs: `results/Table8_ukb_definition_scan.csv`, `results/Table8b_ukb_scan_h2z4.csv`, `results/Table10_sensitivity.csv`, `results/Fig6_ukb_definition_scan.png`.
+
+Why v0.1 reported 29 families: its jackknife used shuffled SNP blocks, which understated standard errors roughly ten- to twentyfold, so nearly every arm passed the heritability filter and 34 of 35 comparisons appeared to exceed two standard errors.
 
 ## Running it
 
@@ -86,7 +90,7 @@ About two hours on two cores / 8 GB RAM, mostly download (1000 Genomes ~15 GB; 1
 
 ## Design choices
 
-- **Self-contained LD scores.** No dependency on the precomputed `eur_w_ld_chr` release; LD scores are computed from 1000 Genomes EUR (1 Mb window, bias-corrected r²), so the audit runs on any reference panel you can download. The thinned SNP set deflates LD scores, so heritability on this scale is not interpreted; genetic correlation is a ratio and is unaffected. The implementation reproduces published correlations (asthma–allergic rhinitis 0.834; depression–anxiety 0.882).
+- **Self-contained LD scores.** No dependency on the precomputed `eur_w_ld_chr` release; LD scores are computed from 1000 Genomes EUR (1 Mb window, bias-corrected r²), so the audit runs on any reference panel you can download. The phase 3 v5b VCFs carry no rsIDs, so variants are named chr:pos:ref:alt and mapped to rsIDs with the Neale variants manifest (`22d`). The v0.3 build has 383,878 SNPs, mean LD score 7.0 to 15.6 by chromosome. The thinned SNP set deflates LD scores, so heritability on this scale is not interpreted; genetic correlation is a ratio and is unaffected. The implementation reproduces published correlations (asthma–allergic rhinitis 0.834; depression–anxiety 0.882).
 - **Uniform SNP density.** The released build samples a fixed fraction (`--thin 0.065`) of MAF ≥ 0.05 SNPs per chromosome rather than a fixed count, which would make LD-score magnitude depend on chromosome length. Genetic correlations moved by < 0.05 between the two builds.
 - **Effective sample size from standard errors**, not reported counts, so files with incomplete metadata still run.
 - **Exact standard errors.** The index is re-formed inside each of 200 delete-one-block jackknife replicates (`ldsc3.py`, and `20_dep_se.py` for the depression family), since its three rg terms share SNPs and are not independent. Blocks are contiguous runs of SNPs in genomic order, as in reference LDSC; v0.1 used shuffled SNP sets, which understates standard errors when neighbouring SNPs are in LD.
@@ -106,7 +110,8 @@ About two hours on two cores / 8 GB RAM, mostly download (1000 Genomes ~15 GB; 1
 - **Results not regenerated.** Everything in `results/` comes from v0.1. Re-running with v0.2 will change standard errors (contiguous blocks), the negative-control set (five a-priori pairs; touchscreen versus self-reported hypertension becomes an informative comparison), Table7 standard errors, and the MVMR instrument sets and conditional F. Point estimates of rg and of the index are unchanged by the block fix.
 - **The 'self-report' AD arm** needs its phenotype definition confirmed (footnote ¹ above).
 - **AD and depression families (scripts 00–21) need inputs you supply:** the GWAS files in `$ROOT/gwas` (sources in the pre-registration) and a 1000 Genomes EUR PLINK set at `$ROOT/ld/EUR` for clumping and for `10_ldscores.sh`. `10_ldscores.sh` is the fixed-count LD build used for those families; the UK Biobank scan uses the fixed-fraction build from `22b`.
-- **LD score regression is simplified** relative to the reference software: weights are 1/max(LD score, 1) without the heteroskedasticity term, and there is no two-step estimator or intercept constraint. Genetic correlations reproduce published values (above).
+- **LD score regression weights.** The scan engine (`ldsc3.py`) uses reference-LDSC weights: 1/max(LD score, 1) times the inverse expected variance of each statistic from a first-pass estimate. There is no two-step estimator or intercept constraint. `13_ldsc.py` and `19_family_index.py` (AD and depression families) still use 1/max(LD score, 1) only and have not been re-run. v0.3 validation on the UK Biobank build: self-reported asthma with hayfever 0.52, self-reported depression with neuroticism 0.71.
+- **Most UK Biobank arms are weakly heritable on this scale.** With honest standard errors only 7 of 34 families pass z ≥ 6. A denser LD-score SNP set (the thinned set is 6.5% of common SNPs) would increase power.
 
 ## Citation
 

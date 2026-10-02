@@ -79,19 +79,36 @@ class Store:
             self.neff[n] = float(d.n_eff.iloc[0])
         self._h = {}; self._r = {}
 
+    # Regression weights follow reference LDSC: 1/max(l,1) for LD between regression
+    # SNPs, times the inverse of the expected variance of the test statistic given a
+    # first-pass estimate (heteroskedasticity weights). v0.2 used 1/max(l,1) only,
+    # which is unbiased but inefficient; with contiguous jackknife blocks that
+    # inefficiency shows up as much wider standard errors.
+    def _h2_weights(self, n, ok):
+        x = self.l2[ok] * self.neff[n] / self.M; y = self.z[n][ok] ** 2
+        b = slope(block_sums(x, y, self.w[ok], np.zeros(ok.sum(), dtype=np.int32), 1).sum(axis=1))
+        h = float(np.clip(b, 0, 1))
+        return x, y, self.w[ok] / (2 * (1 + self.neff[n] * h * self.l2[ok] / self.M) ** 2), h
+
     def h2S(self, n):
         if n not in self._h:
-            z = self.z[n]; ok = np.isfinite(z)
-            self._h[n] = block_sums(self.l2[ok] * self.neff[n] / self.M, z[ok] ** 2,
-                                    self.w[ok], self.lab[ok])
+            ok = np.isfinite(self.z[n])
+            x, y, w, h = self._h2_weights(n, ok)
+            self._h[n] = block_sums(x, y, w, self.lab[ok]); self._hfirst = getattr(self, '_hfirst', {})
+            self._hfirst[n] = h
         return self._h[n]
 
     def rhoS(self, a, b):
         k = tuple(sorted((a, b)))
         if k not in self._r:
             za, zb = self.z[a], self.z[b]; ok = np.isfinite(za) & np.isfinite(zb)
-            self._r[k] = block_sums(self.l2[ok] * np.sqrt(self.neff[a] * self.neff[b]) / self.M,
-                                    za[ok] * zb[ok], self.w[ok], self.lab[ok])
+            l = self.l2[ok]; Na, Nb = self.neff[a], self.neff[b]
+            x = l * np.sqrt(Na * Nb) / self.M; y = za[ok] * zb[ok]
+            r0 = slope(block_sums(x, y, self.w[ok], np.zeros(ok.sum(), dtype=np.int32), 1).sum(axis=1))
+            self.h2S(a); self.h2S(b)
+            ha, hb = self._hfirst[a], self._hfirst[b]
+            var = (1 + Na * ha * l / self.M) * (1 + Nb * hb * l / self.M) + (np.sqrt(Na * Nb) * r0 * l / self.M) ** 2
+            self._r[k] = block_sums(x, y, self.w[ok] / var, self.lab[ok])
         return self._r[k]
 
     def h2(self, n):
