@@ -93,7 +93,7 @@ About two hours on two cores / 8 GB RAM, mostly download (1000 Genomes ~15 GB; 1
 
 ## Design choices
 
-- **Self-contained LD scores.** No dependency on the precomputed `eur_w_ld_chr` release; LD scores are computed from 1000 Genomes EUR (1 Mb window, bias-corrected r²), so the audit runs on any reference panel you can download. The phase 3 v5b VCFs carry no rsIDs, so variants are named chr:pos:ref:alt and mapped to rsIDs with the Neale variants manifest (`22d`). The v0.3 build has 383,878 SNPs, mean LD score 7.0 to 15.6 by chromosome. The thinned SNP set deflates LD scores, so heritability on this scale is not interpreted; genetic correlation is a ratio and is unaffected. The implementation reproduces published correlations (asthma–allergic rhinitis 0.834; depression–anxiety 0.882).
+- **Self-contained LD scores.** No dependency on the precomputed `eur_w_ld_chr` release; LD scores are computed from 1000 Genomes EUR (1 Mb window, bias-corrected r²), so the audit runs on any reference panel you can download. The phase 3 v5b VCFs carry no rsIDs, so variants are named chr:pos:ref:alt and mapped to rsIDs with the Neale variants manifest (`22d`). The v0.3 build has 383,878 SNPs, mean LD score 7.0 to 15.6 by chromosome. The thinned SNP set deflates LD scores, so heritability on this scale is not interpreted; genetic correlation is a ratio and is unaffected. On the v0.4 AD-family run it recovers strong known correlations (asthma–allergic rhinitis 0.77, SE 0.12; depression–anxiety 0.87, SE 0.07; `results/Table4_genetic_correlations.csv`), and the two definitionally identical UK Biobank pairs return rg ≈ 1.00.
 - **Uniform SNP density.** The released build samples a fixed fraction (`--thin 0.065`) of MAF ≥ 0.05 SNPs per chromosome rather than a fixed count, which would make LD-score magnitude depend on chromosome length. Genetic correlations moved by < 0.05 between the two builds.
 - **Effective sample size from standard errors**, not reported counts, so files with incomplete metadata still run.
 - **Exact standard errors.** The index is re-formed inside each of 200 delete-one-block jackknife replicates (`ldsc3.py`, and `20_dep_se.py` for the depression family), since its three rg terms share SNPs and are not independent. Blocks are contiguous runs of SNPs in genomic order, as in reference LDSC; v0.1 used shuffled SNP sets, which understates standard errors when neighbouring SNPs are in LD.
@@ -101,7 +101,7 @@ About two hours on two cores / 8 GB RAM, mostly download (1000 Genomes ~15 GB; 1
 - **Multivariable MR.** The union of the two instrument lists is re-clumped before fitting, and conditional F is the Sanderson–Windmeijer statistic, which includes the reference exposure's standard errors (`12_mvmr.py`; v0.1 values are kept in `conditional_F_v01`).
 - **Winsorising** rg at 1.25 (GWAS ATLAS convention); results unchanged without it (Table10).
 - **Rare binary traits.** Neale round-2 fits linear models to 0/1 phenotypes. Arms require ≥ 2,000 cases, and Table10 restricts to prevalence ≥ 1%. The ordering by definition type survives; the single most extreme result (noninfectious colitis vs hospital-coded ulcerative colitis) does not and should be quoted with that caveat.
-- **The reference is the best available arm, not a gold standard.** Contamination shared by a definition and its reference is invisible to the index, biasing it towards the null. Table10 re-runs with two alternative reference rules; the ranking by definition type is preserved.
+- **The reference is the best available arm, not a gold standard.** Contamination shared by a definition and its reference is invisible to the index, biasing it towards the null. Table10 re-runs with two alternative reference rules. With a curated endpoint as reference the ordering by definition type is preserved (median excess 0.26 self-report vs 0.04 curated). With the largest arm as reference no comparison exceeds 0.1 (median 0.01 vs 0.03): the largest arm is usually the self-report arm, so it shares the contamination and the index cannot see it. The reference must therefore be the most clinically ascertained arm, fixed in advance.
 
 ## Related work
 
@@ -117,7 +117,7 @@ About two hours on two cores / 8 GB RAM, mostly download (1000 Genomes ~15 GB; 1
 
 ## Citation
 
-Kannan V, Loh M. Phenotype-definition contamination is detectable from summary statistics alone: a genome-wide screen validated against multivariable Mendelian randomisation. Abstract submitted to Genome Informatics 2026, Wellcome Genome Campus.
+Kannan V, Loh M. Phenotype-definition contamination is detectable from summary statistics alone: a genome-wide screen validated against multivariable Mendelian randomisation. Short talk (selected from abstracts), Genome Informatics 2026, Wellcome Genome Campus, 2–4 December 2026.
 
 ## Licence
 
